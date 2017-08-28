@@ -30,7 +30,7 @@ admin.site.register(FunctionalGroup)
 admin.site.register(Ligand)
 admin.site.register(Mof)
 admin.site.register(MofLigand)
-admin.site.register(Reaction)
+# admin.site.register(Reaction)
 admin.site.register(ReactionData)
 admin.site.register(CatalystData)
 admin.site.register(ReactionCatalystCC)
@@ -42,3 +42,32 @@ admin.site.register(VisualizationCC)
 admin.site.register(VisualizationLigand)
 admin.site.register(VisualizationMof)
 admin.site.register(VisualizationReaction)
+
+
+class ReactionDataInline(admin.TabularInline):
+    model = ReactionData
+    extra = 1
+
+
+class ReactionCatalystCCInline(admin.TabularInline):
+    model = Reaction.catalysts_cc.through
+    extra = 1
+
+
+class ReactionCatalystLigandInline(admin.TabularInline):
+    model = Reaction.catalysts_ligand.through
+    extra = 1
+
+
+class ReactionCatalystMofInline(admin.TabularInline):
+    model = Reaction.catalysts_mof.through
+    extra = 1
+
+
+@admin.register(Reaction)
+class ReactionAdmin(admin.ModelAdmin):
+    inlines = (
+            ReactionCatalystCCInline,
+            ReactionCatalystLigandInline,
+            ReactionCatalystMofInline,
+            ReactionDataInline,)

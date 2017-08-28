@@ -134,6 +134,11 @@ class Mof(models.Model):
             validators=[MinValueValidator(0.0)],
             blank=True, null=True)
     topology = models.TextField(blank=True, null=True)
+    ligands = models.ManyToManyField(
+            Ligand,
+            through='MofLigand',
+            through_fields=('mof', 'ligand')
+    )
 
     def __str__(self):
         return self.name
@@ -152,7 +157,7 @@ class MofLigand(models.Model):
             on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
     class Meta:
         db_table = 'Mof_Ligand'
@@ -160,20 +165,50 @@ class MofLigand(models.Model):
 
 class Reaction(models.Model):
     id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
+    catalysts_cc = models.ManyToManyField(
+            ChemicalCompound,
+            through='ReactionCatalystCC',
+            through_fields=('reaction_id', 'catalyst_cc_id'),
+            related_name='catalysts_cc',
+            blank=True,
+            )
+    catalysts_ligand = models.ManyToManyField(
+            Ligand,
+            through='ReactionCatalystLigand',
+            through_fields=('reaction_id', 'catalyst_ligand_id'),
+            related_name='catalysts_ligands',
+            blank=True,
+            )
+    catalysts_mof = models.ManyToManyField(
+            Mof,
+            through='ReactionCatalystMof',
+            through_fields=('reaction_id', 'catalyst_mof_id'),
+            related_name='catalysts_mofs',
+            blank=True,
+            )
+    products = models.ManyToManyField(
+            ChemicalCompound,
+            through='ReactionProduct',
+            through_fields=('reaction_id', 'product_id'),
+            related_name='products',
+            blank=True,
+            )
 
     def __str__(self):
-        return self.id
+        return self.name
 
     class Meta:
         db_table = 'Reaction'
 
 
 class ReactionData(models.Model):
-    id_reaction = models.OneToOneField(
+    id = models.AutoField(primary_key=True)
+    reaction_id = models.ForeignKey(
             Reaction,
-            on_delete=models.DO_NOTHING,
-            primary_key=True)
+            on_delete=models.CASCADE,
+            blank=True, null=True)
     data = models.TextField()
     datatype = models.ForeignKey(
             DataType,
@@ -181,6 +216,7 @@ class ReactionData(models.Model):
 
     class Meta:
         db_table = 'ReactionData'
+
 
 class CatalystData(models.Model):
     id = models.AutoField(primary_key=True)
@@ -199,18 +235,21 @@ class CatalystData(models.Model):
 
 class ReactionCatalystCC(models.Model):
     id = models.AutoField(primary_key=True)
-    reaction = models.ForeignKey(Reaction, models.DO_NOTHING)
-    catalyst_cc = models.ForeignKey(
+    reaction_id = models.ForeignKey(
+        Reaction,
+        on_delete=models.DO_NOTHING)
+    catalyst_cc_id = models.ForeignKey(
             ChemicalCompound,
             on_delete=models.DO_NOTHING)
-    catalyst_data = models.ForeignKey(
+    catalyst_data_id = models.ForeignKey(
             CatalystData,
             on_delete=models.DO_NOTHING,
+            related_name='data_cc',
             db_column='catalyst_data')
     notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
     class Meta:
         db_table = 'Reaction_Catalyst_CC'
@@ -218,42 +257,43 @@ class ReactionCatalystCC(models.Model):
 
 class ReactionCatalystLigand(models.Model):
     id = models.AutoField(primary_key=True)
-    reaction = models.ForeignKey(
+    reaction_id = models.ForeignKey(
             Reaction,
             on_delete=models.DO_NOTHING)
-    catalyst_ligand = models.ForeignKey(
+    catalyst_ligand_id = models.ForeignKey(
             Ligand,
             on_delete=models.DO_NOTHING)
-    catalyst_data = models.ForeignKey(
+    catalyst_data_id = models.ForeignKey(
             CatalystData,
             on_delete=models.DO_NOTHING,
+            related_name='data_ligand',
             db_column='catalyst_data')
     notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
     class Meta:
-        managed = False
         db_table = 'Reaction_Catalyst_Ligand'
 
 
 class ReactionCatalystMof(models.Model):
     id = models.AutoField(primary_key=True)
-    reaction = models.ForeignKey(
+    reaction_id = models.ForeignKey(
             Reaction,
             on_delete=models.DO_NOTHING)
-    catalyst_mof = models.ForeignKey(
+    catalyst_mof_id = models.ForeignKey(
             Mof,
             on_delete=models.DO_NOTHING)
-    catalyst_data = models.ForeignKey(
+    catalyst_data_id = models.ForeignKey(
             CatalystData,
             on_delete=models.DO_NOTHING,
+            related_name='data_mof',
             db_column='catalyst_data')
     notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
     class Meta:
         db_table = 'Reaction_Catalyst_Mof'
@@ -261,15 +301,15 @@ class ReactionCatalystMof(models.Model):
 
 class ReactionProduct(models.Model):
     id = models.AutoField(primary_key=True)
-    reaction = models.ForeignKey(
+    reaction_id = models.ForeignKey(
             Reaction,
             on_delete=models.DO_NOTHING)
-    product = models.ForeignKey(
+    product_id = models.ForeignKey(
             ChemicalCompound,
             on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
     class Meta:
         db_table = 'Reaction_Product'
@@ -285,7 +325,7 @@ class ReactionReactant(models.Model):
             on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
     class Meta:
         db_table = 'Reaction_Reactant'
