@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'y9c(ajmykt@@u2+46km#k7a1c9&1k$qw=#27hni=67t52f-bjg'
+SECRET_KEY = '2t9+nz848gek0a4y54ts#)4q_%e7l!y2v*!!c_!cif1p6%=ws2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'db',
 ]
 
 MIDDLEWARE = [
@@ -75,6 +76,19 @@ WSGI_APPLICATION = 'mofdb.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'mofdb',
+    },
+    'postgres': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'mofdb',
+    },
+    # 'workbench': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'mofdb_v3',
+    #     'USER': 'root',
+    # },
+    'test': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
