@@ -222,6 +222,9 @@ class ReactionData(models.Model):
             blank=True)
     data_file = models.FileField()
 
+    def __str__(self):
+        return str(self.id)
+
     class Meta:
         db_table = 'ReactionData'
 
@@ -239,6 +242,9 @@ class CatalystData(models.Model):
     de_field = models.FloatField(blank=True, null=True)
     yield_field = models.FloatField(db_column='yield', blank=True, null=True)  # Field renamed because it was a Python reserved word.
     amount = models.FloatField(blank=True, null=True)
+
+    def __str__(self):
+        return str(self.id)
 
     class Meta:
         db_table = 'CatalystData'
