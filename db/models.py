@@ -228,7 +228,10 @@ class ReactionData(models.Model):
 
 class CatalystData(models.Model):
     id = models.AutoField(primary_key=True)
-    functional_group_id = models.IntegerField(blank=True, null=True)
+    functional_group_id = models.ForeignKey(
+            FunctionalGroup,
+            on_delete=models.DO_NOTHING,
+            blank=True, null=True)
     chirality = EnumField(Chirality, max_length=5, blank=True, null=True)
     rate_constant = models.FloatField(blank=True, null=True)
     conversion = models.FloatField(blank=True, null=True)
