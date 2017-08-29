@@ -216,10 +216,11 @@ class ReactionData(models.Model):
             Reaction,
             on_delete=models.CASCADE,
             blank=True, null=True)
-    data = models.TextField()
-    datatype = models.ForeignKey(
+    data_type = models.ForeignKey(
             DataType,
-            on_delete=models.DO_NOTHING)
+            on_delete=models.DO_NOTHING,
+            blank=True)
+    data_file = models.FileField()
 
     class Meta:
         db_table = 'ReactionData'
@@ -343,7 +344,7 @@ class VisualizationCC(models.Model):
             ChemicalCompound,
             on_delete=models.DO_NOTHING,
             primary_key=True)
-    chemdraw = models.TextField()
+    chemdraw = models.FileField()
 
     class Meta:
         db_table = 'VisualizationCC'
@@ -354,7 +355,7 @@ class VisualizationLigand(models.Model):
             Ligand,
             on_delete=models.DO_NOTHING,
             primary_key=True)
-    chemdraw = models.TextField()
+    chemdraw = models.FileField()
 
     class Meta:
         db_table = 'VisualizationLigand'
@@ -365,7 +366,7 @@ class VisualizationMof(models.Model):
             Mof,
             on_delete=models.DO_NOTHING,
             primary_key=True)
-    cif = models.TextField(db_column='CIF')  # Field name made lowercase.
+    cif = models.FileField(db_column='CIF')  # Field name made lowercase.
 
     class Meta:
         db_table = 'VisualizationMof'
@@ -376,7 +377,7 @@ class VisualizationReaction(models.Model):
             Reaction,
             on_delete=models.DO_NOTHING,
             primary_key=True)
-    chemdraw = models.TextField()
+    chemdraw = models.FileField()
 
     class Meta:
         db_table = 'VisualizationReaction'
