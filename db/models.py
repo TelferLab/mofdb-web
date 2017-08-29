@@ -188,6 +188,13 @@ class Reaction(models.Model):
             related_name='catalysts_mofs',
             blank=True,
             )
+    reactants = models.ManyToManyField(
+            ChemicalCompound,
+            through='ReactionReactant',
+            through_fields=('reaction_id', 'reactant_id'),
+            related_name='reactants',
+            blank=True,
+            )
     products = models.ManyToManyField(
             ChemicalCompound,
             through='ReactionProduct',
