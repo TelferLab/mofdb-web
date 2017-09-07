@@ -10,11 +10,7 @@ from db.models import MofLigand
 from db.models import Reaction
 from db.models import ReactionData
 from db.models import ExperimentalData
-from db.models import ReactionCatalystCC
-from db.models import ReactionCatalystLigand
-from db.models import ReactionCatalystMof
-from db.models import ReactionReactant
-from db.models import ReactionProduct
+from db.models import ReactionComponent
 from db.models import VisualizationCC
 from db.models import VisualizationLigand
 from db.models import VisualizationMof
@@ -23,25 +19,10 @@ from db.models import VisualizationReaction
 
 # Register your models here.
 
-# admin.site.register(ChemicalCompound)
-# admin.site.register(Reaction)
-# admin.site.register(Ligand)
-# admin.site.register(Mof)
 admin.site.register(DataType)
 admin.site.register(Category)
 admin.site.register(FunctionalGroup)
 admin.site.register(ExperimentalData)
-# admin.site.register(MofLigand)
-# admin.site.register(ReactionData)
-# admin.site.register(ReactionCatalystCC)
-# admin.site.register(ReactionCatalystLigand)
-# admin.site.register(ReactionCatalystMof)
-# admin.site.register(ReactionReactant)
-# admin.site.register(ReactionProduct)
-# admin.site.register(VisualizationCC)
-# admin.site.register(VisualizationLigand)
-# admin.site.register(VisualizationMof)
-# admin.site.register(VisualizationReaction)
 
 
 # Reaction {{{
@@ -55,27 +36,27 @@ class ReactionDataInline(admin.TabularInline):
     extra = 1
 
 
-class ReactionCatalystCCInline(admin.TabularInline):
+class ReactionComponentCCInline(admin.TabularInline):
     model = Reaction.catalysts_cc.through
     extra = 1
 
 
-class ReactionCatalystLigandInline(admin.TabularInline):
+class ReactionComponentLigandInline(admin.TabularInline):
     model = Reaction.catalysts_ligand.through
     extra = 1
 
 
-class ReactionCatalystMofInline(admin.TabularInline):
+class ReactionComponentMofInline(admin.TabularInline):
     model = Reaction.catalysts_mof.through
     extra = 1
 
 
-class ReactionReactantInline(admin.TabularInline):
+class ReactionComponentReactantInline(admin.TabularInline):
     model = Reaction.reactants.through
     extra = 1
 
 
-class ReactionProductInline(admin.TabularInline):
+class ReactionComponentProductInline(admin.TabularInline):
     model = Reaction.products.through
     extra = 1
 
@@ -85,11 +66,11 @@ class ReactionAdmin(admin.ModelAdmin):
     inlines = (
         VisualizationReactionInline,
         ReactionDataInline,
-        ReactionCatalystCCInline,
-        ReactionCatalystLigandInline,
-        ReactionCatalystMofInline,
-        ReactionReactantInline,
-        ReactionProductInline,
+        ReactionComponentCCInline,
+        ReactionComponentLigandInline,
+        ReactionComponentMofInline,
+        ReactionComponentReactantInline,
+        ReactionComponentProductInline,
     )
 
 # }}}

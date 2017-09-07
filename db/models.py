@@ -11,6 +11,10 @@ from django.db import models
 
 from django.core.validators import MinValueValidator
 
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
+from gm2m import GM2MField
+
 from enumfields import EnumField
 from enumfields import Enum  # Uses Ethan Furman's "enum34" backport
 
@@ -29,7 +33,7 @@ class Category(models.Model):
 
     class Meta:
         db_table = 'Category'
-        verbose_name_plural = "Category"
+        verbose_name = "Category"
         verbose_name_plural = "Categories"
 
 
@@ -167,38 +171,33 @@ class Reaction(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
-    catalysts_cc = models.ManyToManyField(
-        ChemicalCompound,
-        through='ReactionCatalystCC',
-        through_fields=('reaction_id', 'catalyst_cc_id'),
+    catalysts_cc = GM2MField(
+        through='ReactionComponent',
+        through_fields=('reaction_id', 'component'),
         related_name='catalysts_cc',
         blank=True,
     )
-    catalysts_ligand = models.ManyToManyField(
-        Ligand,
-        through='ReactionCatalystLigand',
-        through_fields=('reaction_id', 'catalyst_ligand_id'),
+    catalysts_ligand = GM2MField(
+        through='ReactionComponent',
+        through_fields=('reaction_id', 'component'),
         related_name='catalysts_ligands',
         blank=True,
     )
-    catalysts_mof = models.ManyToManyField(
-        Mof,
-        through='ReactionCatalystMof',
-        through_fields=('reaction_id', 'catalyst_mof_id'),
+    catalysts_mof = GM2MField(
+        through='ReactionComponent',
+        through_fields=('reaction_id', 'component'),
         related_name='catalysts_mofs',
         blank=True,
     )
-    reactants = models.ManyToManyField(
-        ChemicalCompound,
-        through='ReactionReactant',
-        through_fields=('reaction_id', 'reactant_id'),
+    reactants = GM2MField(
+        through='ReactionComponent',
+        through_fields=('reaction_id', 'component'),
         related_name='reactants',
         blank=True,
     )
-    products = models.ManyToManyField(
-        ChemicalCompound,
-        through='ReactionProduct',
-        through_fields=('reaction_id', 'product_id'),
+    products = GM2MField(
+        through='ReactionComponent',
+        through_fields=('reaction_id', 'component'),
         related_name='products',
         blank=True,
     )
@@ -251,106 +250,40 @@ class ExperimentalData(models.Model):
         db_table = 'ExperimentalData'
 
 
-class ReactionCatalystCC(models.Model):
+class ReactionComponent(models.Model):
     id = models.AutoField(primary_key=True)
     reaction_id = models.ForeignKey(
         Reaction,
         on_delete=models.DO_NOTHING)
-    catalyst_cc_id = models.ForeignKey(
-        ChemicalCompound,
-        on_delete=models.DO_NOTHING)
+    notes = models.TextField(blank=True, null=True)
+
+    limit = models.Q(app_label='db', model='ChemicalCompound') | \
+        models.Q(app_label='db', model='Ligand') | \
+        models.Q(app_label='db', model='Mof')
+    component_type = models.ForeignKey(
+        ContentType,
+        limit_choices_to=limit,
+        blank=True, null=True)
+    component_id = models.PositiveIntegerField(
+        verbose_name=('related object'),
+        null=True,)
+    component = GenericForeignKey(
+        'component_type', 'component_id')
+
     experimental_data_id = models.ForeignKey(
         ExperimentalData,
         on_delete=models.DO_NOTHING,
         related_name='data_cc',
         db_column='ExperimentalData',
         blank=True, null=True)
-    notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return str(self.id)
 
     class Meta:
-        db_table = 'Reaction_Catalyst_CC'
-
-
-class ReactionCatalystLigand(models.Model):
-    id = models.AutoField(primary_key=True)
-    reaction_id = models.ForeignKey(
-        Reaction,
-        on_delete=models.DO_NOTHING)
-    catalyst_ligand_id = models.ForeignKey(
-        Ligand,
-        on_delete=models.DO_NOTHING)
-    experimental_data_id = models.ForeignKey(
-        ExperimentalData,
-        on_delete=models.DO_NOTHING,
-        related_name='data_ligand',
-        db_column='ExperimentalData',
-        blank=True, null=True)
-    notes = models.TextField(blank=True, null=True)
-
-    def __str__(self):
-        return str(self.id)
-
-    class Meta:
-        db_table = 'Reaction_Catalyst_Ligand'
-
-
-class ReactionCatalystMof(models.Model):
-    id = models.AutoField(primary_key=True)
-    reaction_id = models.ForeignKey(
-        Reaction,
-        on_delete=models.DO_NOTHING)
-    catalyst_mof_id = models.ForeignKey(
-        Mof,
-        on_delete=models.DO_NOTHING)
-    experimental_data_id = models.ForeignKey(
-        ExperimentalData,
-        on_delete=models.DO_NOTHING,
-        related_name='data_mof',
-        db_column='ExperimentalData',
-        blank=True, null=True)
-    notes = models.TextField(blank=True, null=True)
-
-    def __str__(self):
-        return str(self.id)
-
-    class Meta:
-        db_table = 'Reaction_Catalyst_Mof'
-
-
-class ReactionProduct(models.Model):
-    id = models.AutoField(primary_key=True)
-    reaction_id = models.ForeignKey(
-        Reaction,
-        on_delete=models.DO_NOTHING)
-    product_id = models.ForeignKey(
-        ChemicalCompound,
-        on_delete=models.DO_NOTHING)
-
-    def __str__(self):
-        return str(self.id)
-
-    class Meta:
-        db_table = 'Reaction_Product'
-
-
-class ReactionReactant(models.Model):
-    id = models.AutoField(primary_key=True)
-    reaction = models.ForeignKey(
-        Reaction,
-        on_delete=models.DO_NOTHING)
-    reactant = models.ForeignKey(
-        ChemicalCompound,
-        on_delete=models.DO_NOTHING)
-
-    def __str__(self):
-        return str(self.id)
-
-    class Meta:
-        db_table = 'Reaction_Reactant'
-
+        db_table = 'Reaction_Component'
+        verbose_name = "Reaction Component"
+        verbose_name_plural = "Reaction Components"
 
 class VisualizationCC(models.Model):
     id_chemical_compound = models.OneToOneField(

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'storages',          # django-storages: https://github.com/jschneier/django-storages
     'django_cleanup',    # https://github.com/un1t/django-cleanup
     'django_tables2',     # https://github.com/bradleyayers/django-tables2
+    'gm2m', # http://django-gm2m.readthedocs.io/en/stable/quick_start.html
     'db',
 ]
 
