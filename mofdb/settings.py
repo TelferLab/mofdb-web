@@ -41,10 +41,12 @@ INSTALLED_APPS = [
     # greater consistency between gunicorn and `./manage.py runserver`. See:
     # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
     'whitenoise.runserver_nostatic',
+    'livereload',
     'django.contrib.staticfiles',
     'django_extensions', # https://github.com/django-extensions/django-extensions
     'storages',          # django-storages: https://github.com/jschneier/django-storages
     'django_cleanup',    # https://github.com/un1t/django-cleanup
+    'django_tables2',     # https://github.com/bradleyayers/django-tables2
     'db',
 ]
 
@@ -57,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'livereload.middleware.LiveReloadScript',
 ]
 
 ROOT_URLCONF = 'mofdb.urls'
@@ -64,7 +67,8 @@ ROOT_URLCONF = 'mofdb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -139,8 +143,8 @@ USE_TZ = True
 
 # Change 'default' database configuration with $DATABASE_URL.
 DATABASES['default'] = dj_database_url.config(conn_max_age=500,
-        # Local dev in db mofdb
-        default='postgres:///mofdb')
+                                              # Local dev in db mofdb
+                                              default='postgres:///mofdb')
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

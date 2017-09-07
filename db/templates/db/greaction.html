@@ -1,0 +1,60 @@
+{% extends "gentelella/base_site.html" %}
+{% load render_table from django_tables2 %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link href="/static/db.css" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <!-- top tiles -->
+    <div class="row tile_count">
+      <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+        <span class="count_top"><i class="fa fa-flask"></i> Reactions</span>
+        <div class="count"> {{ reactions.count }} </div>
+        {# <span class="count_bottom"><i class="green">4% </i> From last Week</span> #}
+      </div>
+      <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+        <span class="count_top"><i class="fa fa-group"></i> Chemical Compounds</span>
+        <div class="count"> {{ chemical_compounds.count }} </div>
+        {# <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span> #}
+      </div>
+      <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+        <span class="count_top"><i class="fa fa-share-alt"></i> Ligands</span>
+        <div class="count"> {{ ligands.count }} </div>
+        {# <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span> #}
+      </div>
+      <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+        <span class="count_top"><i class="fa fa-cubes"></i> Mofs</span>
+        <div class="count"> {{ mofs.count }} </div>
+        {# <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span> #}
+      </div>
+    </div>
+    {% for reaction in reactions %}
+    <div class="reaction container-fluid">
+        <div class="name">
+            {{ reaction.name|linebreaks|escape}}
+        </div>
+        <div class="field_sep"></div>
+        <div class="notes row">
+            <div class="col-sm-2">
+            Notes:
+            </div>
+            <div class="col-sm-10">
+                {{ reaction.notes|linebreaks|escape }}
+            </div>
+        </div>
+        <div class="field_sep"></div>
+        <div class="catalysts">
+        </div>
+        <div class="field_sep"></div>
+        <div class="table_experimental_data">
+          {{ reaction.pk|linebreaks|escape }}
+          {% render_table experimental_data_table %}
+        </div>
+        <div class="field_sep"></div>
+    </div>
+    {% endfor reaction in reactions %}
+{% endblock content %}
+<!-- vim: set ft=htmldjango: -->

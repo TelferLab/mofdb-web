@@ -1,0 +1,12 @@
+{% extends "db/base.html" %}
+
+{% block content %}
+    <p>Hi, let's !</p>
+    <p>It works!</p>
+    <ul>
+        {% for reaction in reactions %}
+        <li>{{ reaction.name }}</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
+<!-- vim: set ft=htmldjango: -->

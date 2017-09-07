@@ -9,7 +9,7 @@ from db.models import Mof
 from db.models import MofLigand
 from db.models import Reaction
 from db.models import ReactionData
-from db.models import CatalystData
+from db.models import ExperimentalData
 from db.models import ReactionCatalystCC
 from db.models import ReactionCatalystLigand
 from db.models import ReactionCatalystMof
@@ -30,7 +30,7 @@ from db.models import VisualizationReaction
 admin.site.register(DataType)
 admin.site.register(Category)
 admin.site.register(FunctionalGroup)
-admin.site.register(CatalystData)
+admin.site.register(ExperimentalData)
 # admin.site.register(MofLigand)
 # admin.site.register(ReactionData)
 # admin.site.register(ReactionCatalystCC)
@@ -83,14 +83,14 @@ class ReactionProductInline(admin.TabularInline):
 @admin.register(Reaction)
 class ReactionAdmin(admin.ModelAdmin):
     inlines = (
-            VisualizationReactionInline,
-            ReactionDataInline,
-            ReactionCatalystCCInline,
-            ReactionCatalystLigandInline,
-            ReactionCatalystMofInline,
-            ReactionReactantInline,
-            ReactionProductInline,
-            )
+        VisualizationReactionInline,
+        ReactionDataInline,
+        ReactionCatalystCCInline,
+        ReactionCatalystLigandInline,
+        ReactionCatalystMofInline,
+        ReactionReactantInline,
+        ReactionProductInline,
+    )
 
 # }}}
 
@@ -104,8 +104,8 @@ class VisualizationCCInline(admin.TabularInline):
 @admin.register(ChemicalCompound)
 class ChemicalCompoundAdmin(admin.ModelAdmin):
     inlines = (
-            VisualizationCCInline,
-            )
+        VisualizationCCInline,
+    )
 # }}}
 
 
@@ -118,8 +118,8 @@ class VisualizationLigandInline(admin.TabularInline):
 @admin.register(Ligand)
 class LigandAdmin(admin.ModelAdmin):
     inlines = (
-            VisualizationLigandInline,
-            )
+        VisualizationLigandInline,
+    )
 # }}}
 
 
@@ -137,7 +137,7 @@ class VisualizationMofInline(admin.TabularInline):
 @admin.register(Mof)
 class MofAdmin(admin.ModelAdmin):
     inlines = (
-            VisualizationMofInline,
-            MofLigandInline,
-            )
+        VisualizationMofInline,
+        MofLigandInline,
+    )
 # }}}

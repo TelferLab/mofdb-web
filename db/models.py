@@ -41,8 +41,8 @@ class ChemicalCompound(models.Model):
     synthesis = models.TextField(blank=True, null=True)
     analysis = models.TextField(blank=True, null=True)
     mass = models.FloatField(
-            validators=[MinValueValidator(0.0)],
-            blank=True, null=True)
+        validators=[MinValueValidator(0.0)],
+        blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -77,9 +77,9 @@ class BaseLigand(models.Model):
     id = models.AutoField(primary_key=True)
     base_name = models.CharField(max_length=45, blank=True, null=True)
     base_ligand = models.ForeignKey(
-            'Ligand',
-            on_delete=models.DO_NOTHING,
-            blank=True, null=True)
+        'Ligand',
+        on_delete=models.DO_NOTHING,
+        blank=True, null=True)
 
     def __str__(self):
         return self.base_name
@@ -96,25 +96,25 @@ class Ligand(models.Model):
     synthesis = models.TextField(blank=True, null=True)
     analysis = models.TextField(blank=True, null=True)
     mass = models.FloatField(
-            validators=[MinValueValidator(0.0)],
-            blank=True, null=True)
+        validators=[MinValueValidator(0.0)],
+        blank=True, null=True)
 
     category = models.ForeignKey(
-            Category,
-            on_delete=models.DO_NOTHING,
-            blank=True, null=True)
+        Category,
+        on_delete=models.DO_NOTHING,
+        blank=True, null=True)
 
     functional_group = models.ForeignKey(
-            FunctionalGroup,
-            on_delete=models.DO_NOTHING,
-            blank=True, null=True)
+        FunctionalGroup,
+        on_delete=models.DO_NOTHING,
+        blank=True, null=True)
     connections = models.PositiveIntegerField(blank=True, null=True)
     chirality = EnumField(Chirality, max_length=5, blank=True, null=True)
     base_ligand = models.ForeignKey(
-            BaseLigand,
-            on_delete=models.DO_NOTHING,
-            db_column='base_ligand',
-            blank=True, null=True)
+        BaseLigand,
+        on_delete=models.DO_NOTHING,
+        db_column='base_ligand',
+        blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -131,13 +131,13 @@ class Mof(models.Model):
     synthesis = models.TextField(blank=True, null=True)
     analysis = models.TextField(blank=True, null=True)
     mass = models.FloatField(
-            validators=[MinValueValidator(0.0)],
-            blank=True, null=True)
+        validators=[MinValueValidator(0.0)],
+        blank=True, null=True)
     topology = models.TextField(blank=True, null=True)
     ligands = models.ManyToManyField(
-            Ligand,
-            through='MofLigand',
-            through_fields=('mof', 'ligand')
+        Ligand,
+        through='MofLigand',
+        through_fields=('mof', 'ligand')
     )
 
     def __str__(self):
@@ -150,11 +150,11 @@ class Mof(models.Model):
 class MofLigand(models.Model):
     id = models.AutoField(primary_key=True)
     mof = models.ForeignKey(
-            Mof,
-            on_delete=models.DO_NOTHING)
+        Mof,
+        on_delete=models.DO_NOTHING)
     ligand = models.ForeignKey(
-            Ligand,
-            on_delete=models.DO_NOTHING)
+        Ligand,
+        on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return str(self.id)
@@ -168,40 +168,40 @@ class Reaction(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
     catalysts_cc = models.ManyToManyField(
-            ChemicalCompound,
-            through='ReactionCatalystCC',
-            through_fields=('reaction_id', 'catalyst_cc_id'),
-            related_name='catalysts_cc',
-            blank=True,
-            )
+        ChemicalCompound,
+        through='ReactionCatalystCC',
+        through_fields=('reaction_id', 'catalyst_cc_id'),
+        related_name='catalysts_cc',
+        blank=True,
+    )
     catalysts_ligand = models.ManyToManyField(
-            Ligand,
-            through='ReactionCatalystLigand',
-            through_fields=('reaction_id', 'catalyst_ligand_id'),
-            related_name='catalysts_ligands',
-            blank=True,
-            )
+        Ligand,
+        through='ReactionCatalystLigand',
+        through_fields=('reaction_id', 'catalyst_ligand_id'),
+        related_name='catalysts_ligands',
+        blank=True,
+    )
     catalysts_mof = models.ManyToManyField(
-            Mof,
-            through='ReactionCatalystMof',
-            through_fields=('reaction_id', 'catalyst_mof_id'),
-            related_name='catalysts_mofs',
-            blank=True,
-            )
+        Mof,
+        through='ReactionCatalystMof',
+        through_fields=('reaction_id', 'catalyst_mof_id'),
+        related_name='catalysts_mofs',
+        blank=True,
+    )
     reactants = models.ManyToManyField(
-            ChemicalCompound,
-            through='ReactionReactant',
-            through_fields=('reaction_id', 'reactant_id'),
-            related_name='reactants',
-            blank=True,
-            )
+        ChemicalCompound,
+        through='ReactionReactant',
+        through_fields=('reaction_id', 'reactant_id'),
+        related_name='reactants',
+        blank=True,
+    )
     products = models.ManyToManyField(
-            ChemicalCompound,
-            through='ReactionProduct',
-            through_fields=('reaction_id', 'product_id'),
-            related_name='products',
-            blank=True,
-            )
+        ChemicalCompound,
+        through='ReactionProduct',
+        through_fields=('reaction_id', 'product_id'),
+        related_name='products',
+        blank=True,
+    )
 
     def __str__(self):
         return self.name
@@ -213,13 +213,13 @@ class Reaction(models.Model):
 class ReactionData(models.Model):
     id = models.AutoField(primary_key=True)
     reaction_id = models.ForeignKey(
-            Reaction,
-            on_delete=models.CASCADE,
-            blank=True, null=True)
+        Reaction,
+        on_delete=models.CASCADE,
+        blank=True, null=True)
     data_type = models.ForeignKey(
-            DataType,
-            on_delete=models.DO_NOTHING,
-            blank=True)
+        DataType,
+        on_delete=models.DO_NOTHING,
+        blank=True)
     data_file = models.FileField()
 
     def __str__(self):
@@ -229,25 +229,26 @@ class ReactionData(models.Model):
         db_table = 'ReactionData'
 
 
-class CatalystData(models.Model):
+class ExperimentalData(models.Model):
     id = models.AutoField(primary_key=True)
     functional_group_id = models.ForeignKey(
-            FunctionalGroup,
-            on_delete=models.DO_NOTHING,
-            blank=True, null=True)
+        FunctionalGroup,
+        on_delete=models.DO_NOTHING,
+        blank=True, null=True)
     chirality = EnumField(Chirality, max_length=5, blank=True, null=True)
     rate_constant = models.FloatField(blank=True, null=True)
     conversion = models.FloatField(blank=True, null=True)
     ee_field = models.FloatField(blank=True, null=True)
     de_field = models.FloatField(blank=True, null=True)
-    yield_field = models.FloatField(db_column='yield', blank=True, null=True)  # Field renamed because it was a Python reserved word.
+    # yield renamed because it was a Python reserved word.
+    yield_field = models.FloatField(db_column='yield', blank=True, null=True)
     amount = models.FloatField(blank=True, null=True)
 
     def __str__(self):
         return str(self.id)
 
     class Meta:
-        db_table = 'CatalystData'
+        db_table = 'ExperimentalData'
 
 
 class ReactionCatalystCC(models.Model):
@@ -256,13 +257,14 @@ class ReactionCatalystCC(models.Model):
         Reaction,
         on_delete=models.DO_NOTHING)
     catalyst_cc_id = models.ForeignKey(
-            ChemicalCompound,
-            on_delete=models.DO_NOTHING)
-    catalyst_data_id = models.ForeignKey(
-            CatalystData,
-            on_delete=models.DO_NOTHING,
-            related_name='data_cc',
-            db_column='catalyst_data')
+        ChemicalCompound,
+        on_delete=models.DO_NOTHING)
+    experimental_data_id = models.ForeignKey(
+        ExperimentalData,
+        on_delete=models.DO_NOTHING,
+        related_name='data_cc',
+        db_column='ExperimentalData',
+        blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -275,16 +277,17 @@ class ReactionCatalystCC(models.Model):
 class ReactionCatalystLigand(models.Model):
     id = models.AutoField(primary_key=True)
     reaction_id = models.ForeignKey(
-            Reaction,
-            on_delete=models.DO_NOTHING)
+        Reaction,
+        on_delete=models.DO_NOTHING)
     catalyst_ligand_id = models.ForeignKey(
-            Ligand,
-            on_delete=models.DO_NOTHING)
-    catalyst_data_id = models.ForeignKey(
-            CatalystData,
-            on_delete=models.DO_NOTHING,
-            related_name='data_ligand',
-            db_column='catalyst_data')
+        Ligand,
+        on_delete=models.DO_NOTHING)
+    experimental_data_id = models.ForeignKey(
+        ExperimentalData,
+        on_delete=models.DO_NOTHING,
+        related_name='data_ligand',
+        db_column='ExperimentalData',
+        blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -297,16 +300,17 @@ class ReactionCatalystLigand(models.Model):
 class ReactionCatalystMof(models.Model):
     id = models.AutoField(primary_key=True)
     reaction_id = models.ForeignKey(
-            Reaction,
-            on_delete=models.DO_NOTHING)
+        Reaction,
+        on_delete=models.DO_NOTHING)
     catalyst_mof_id = models.ForeignKey(
-            Mof,
-            on_delete=models.DO_NOTHING)
-    catalyst_data_id = models.ForeignKey(
-            CatalystData,
-            on_delete=models.DO_NOTHING,
-            related_name='data_mof',
-            db_column='catalyst_data')
+        Mof,
+        on_delete=models.DO_NOTHING)
+    experimental_data_id = models.ForeignKey(
+        ExperimentalData,
+        on_delete=models.DO_NOTHING,
+        related_name='data_mof',
+        db_column='ExperimentalData',
+        blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -319,11 +323,11 @@ class ReactionCatalystMof(models.Model):
 class ReactionProduct(models.Model):
     id = models.AutoField(primary_key=True)
     reaction_id = models.ForeignKey(
-            Reaction,
-            on_delete=models.DO_NOTHING)
+        Reaction,
+        on_delete=models.DO_NOTHING)
     product_id = models.ForeignKey(
-            ChemicalCompound,
-            on_delete=models.DO_NOTHING)
+        ChemicalCompound,
+        on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return str(self.id)
@@ -335,11 +339,11 @@ class ReactionProduct(models.Model):
 class ReactionReactant(models.Model):
     id = models.AutoField(primary_key=True)
     reaction = models.ForeignKey(
-            Reaction,
-            on_delete=models.DO_NOTHING)
+        Reaction,
+        on_delete=models.DO_NOTHING)
     reactant = models.ForeignKey(
-            ChemicalCompound,
-            on_delete=models.DO_NOTHING)
+        ChemicalCompound,
+        on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return str(self.id)
@@ -350,9 +354,9 @@ class ReactionReactant(models.Model):
 
 class VisualizationCC(models.Model):
     id_chemical_compound = models.OneToOneField(
-            ChemicalCompound,
-            on_delete=models.DO_NOTHING,
-            primary_key=True)
+        ChemicalCompound,
+        on_delete=models.DO_NOTHING,
+        primary_key=True)
     chemdraw = models.FileField()
 
     class Meta:
@@ -361,9 +365,9 @@ class VisualizationCC(models.Model):
 
 class VisualizationLigand(models.Model):
     id_ligand = models.OneToOneField(
-            Ligand,
-            on_delete=models.DO_NOTHING,
-            primary_key=True)
+        Ligand,
+        on_delete=models.DO_NOTHING,
+        primary_key=True)
     chemdraw = models.FileField()
 
     class Meta:
@@ -372,9 +376,9 @@ class VisualizationLigand(models.Model):
 
 class VisualizationMof(models.Model):
     id_mof = models.OneToOneField(
-            Mof,
-            on_delete=models.DO_NOTHING,
-            primary_key=True)
+        Mof,
+        on_delete=models.DO_NOTHING,
+        primary_key=True)
     cif = models.FileField(db_column='CIF')  # Field name made lowercase.
 
     class Meta:
@@ -383,9 +387,9 @@ class VisualizationMof(models.Model):
 
 class VisualizationReaction(models.Model):
     id_reaction = models.OneToOneField(
-            Reaction,
-            on_delete=models.DO_NOTHING,
-            primary_key=True)
+        Reaction,
+        on_delete=models.DO_NOTHING,
+        primary_key=True)
     chemdraw = models.FileField()
 
     class Meta:
