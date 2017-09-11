@@ -35,7 +35,7 @@ class Category(models.Model):
 
 class ChemicalCompound(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100, blank=True, null=True)
+    name = models.CharField(max_length=200, blank=True, null=True)
     nick = models.CharField(max_length=45, blank=True, null=True)
     formula = models.CharField(max_length=45, blank=True, null=True)
     synthesis = models.TextField(blank=True, null=True)
@@ -64,7 +64,7 @@ class DataType(models.Model):
 
 class FunctionalGroup(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=45, blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -75,7 +75,7 @@ class FunctionalGroup(models.Model):
 
 class BaseLigand(models.Model):
     id = models.AutoField(primary_key=True)
-    base_name = models.CharField(max_length=45, blank=True, null=True)
+    base_name = models.CharField(max_length=200, blank=True, null=True)
     base_ligand = models.ForeignKey(
         'Ligand',
         on_delete=models.DO_NOTHING,
@@ -90,7 +90,7 @@ class BaseLigand(models.Model):
 
 class Ligand(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100, blank=True, null=True)
+    name = models.CharField(max_length=200, blank=True, null=True)
     nick = models.CharField(max_length=45, blank=True, null=True)
     formula = models.CharField(max_length=45, blank=True, null=True)
     synthesis = models.TextField(blank=True, null=True)
@@ -125,7 +125,7 @@ class Ligand(models.Model):
 
 class Mof(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100, blank=True, null=True)
+    name = models.CharField(max_length=200, blank=True, null=True)
     nick = models.CharField(max_length=45, blank=True, null=True)
     formula = models.CharField(max_length=45, blank=True, null=True)
     synthesis = models.TextField(blank=True, null=True)
@@ -165,7 +165,7 @@ class MofLigand(models.Model):
 
 class Reaction(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100, blank=True, null=True)
+    name = models.CharField(max_length=200, blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
     catalysts_cc = models.ManyToManyField(
         ChemicalCompound,
@@ -206,6 +206,11 @@ class Reaction(models.Model):
     def __str__(self):
         return self.name
 
+    # @property
+    # def all_components(self):
+    #     return ', '.join([reactionligand.experimental_data_id for reactionligand in self.catalysts_ligand.all()])
+
+
     class Meta:
         db_table = 'Reaction'
 
@@ -238,8 +243,8 @@ class ExperimentalData(models.Model):
     chirality = EnumField(Chirality, max_length=5, blank=True, null=True)
     rate_constant = models.FloatField(blank=True, null=True)
     conversion = models.FloatField(blank=True, null=True)
-    ee_field = models.FloatField(blank=True, null=True)
-    de_field = models.FloatField(blank=True, null=True)
+    ee = models.FloatField(blank=True, null=True)
+    de = models.FloatField(blank=True, null=True)
     # yield renamed because it was a Python reserved word.
     yield_field = models.FloatField(db_column='yield', blank=True, null=True)
     amount = models.FloatField(blank=True, null=True)
