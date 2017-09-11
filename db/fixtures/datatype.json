@@ -1,9 +1,0 @@
-[
-  {
-    "model": "db.DataType",
-    "pk": 1,
-    "fields": {
-      "type": "Hola"
-    }
-  }
-]
