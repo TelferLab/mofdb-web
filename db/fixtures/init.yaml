@@ -1,0 +1,125 @@
+- model: db.DataType
+  pk: 1
+  fields:
+    type: NMR
+
+- model: db.Category
+  pk: 1
+  fields:
+    name: Nitrogen
+
+- model: db.FunctionalGroup
+  pk: 1
+  fields:
+    name: Urea
+
+- model: db.ExperimentalData
+  pk: 1
+  fields:
+    functional_group_id: 1
+    chirality: R
+    rate_constant: 0.5
+    conversion: 0.1
+    ee: 0.3
+    de: 0.3
+    yield_field: 0.3
+    amount: 2
+
+- model: db.ExperimentalData
+  pk: 2
+  fields:
+    functional_group_id: 1
+    chirality: L
+    rate_constant: 0.3
+    conversion: 0.2
+    ee: 0.4
+    de: 0.4
+    yield_field: 0.3
+    amount: 1
+
+- model: db.ChemicalCompound
+  pk: 1
+  fields:
+    name: Acetone
+    formula: C3H6O
+    mass: 58.08
+- model: db.ChemicalCompound
+  pk: 2
+  fields:
+    name: "4-((4-methoxyphenyl)amino)-4-phenylbutan-2-one"
+    nick: manich-product-1
+    formula: C17H19NO2
+    mass: 269.34
+
+- model: db.Ligand
+  pk: 1
+  fields:
+    name: "Terephthalic acid"
+    nick: BDC
+    formula: C8H604
+    mass: 166.13
+    connections: 2
+- model: db.Ligand
+  pk: 2
+  fields:
+    name: "2-guanidino-[1,1'-biphenyl]-4,4'-dicarboxylic acid"
+    nick: BPDC-asym-gua
+    formula: C15H13N3O4
+- model: db.Ligand
+  pk: 3
+  fields:
+    name: "5,5,10,10,15,15-hexamethyl-10,15-dihydro-5H-diindeno[1,2-a:1',2'-c]fluorene-2,7,12-tricarboxylic acid"
+    nick: hmtt
+    formula: C36H30O6
+
+- model: db.MofLigand
+  pk: 1
+  fields:
+    mof: 1
+    ligand: 1
+- model: db.MofLigand
+  pk: 2
+  fields:
+    mof: 1
+    ligand: 2
+- model: db.MofLigand
+  pk: 3
+  fields:
+    mof: 1
+    ligand: 3
+
+- model: db.Mof
+  pk: 1
+  fields:
+    name: MUF-77-BPDC-gua
+    # ligands: [1,2,3]
+
+- model: db.Reaction
+  pk: 1
+  fields:
+    name: Mannich-01
+    notes: This was created in a fixture.
+    # catalysts_ligand: [1]
+    # catalysts_mof: [1]
+    # products: [2]
+
+- model: db.ReactionCatalystLigand
+  pk: 1
+  fields:
+    reaction_id: 1
+    catalyst_ligand_id: 1
+    experimental_data_id: 1
+    notes: What?
+
+- model: db.ReactionCatalystMof
+  pk: 1
+  fields:
+    reaction_id: 1
+    catalyst_mof_id: 1
+    experimental_data_id: 2
+
+- model: db.ReactionProduct
+  pk: 1
+  fields:
+    reaction_id: 1
+    product_id: 2
