@@ -32,6 +32,7 @@ DEBUG = True
 # Application definition
 
 INSTALLED_APPS = [
+    'grappelli',  # https://django-grappelli.readthedocs.io/en/latest/customization.html
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,10 +44,11 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'livereload',
     'django.contrib.staticfiles',
-    'django_extensions', # https://github.com/django-extensions/django-extensions
-    'storages',          # django-storages: https://github.com/jschneier/django-storages
-    'django_cleanup',    # https://github.com/un1t/django-cleanup
+    'django_extensions',  # https://github.com/django-extensions/django-extensions
+    'storages',           # django-storages: https://github.com/jschneier/django-storages
+    'django_cleanup',     # https://github.com/un1t/django-cleanup
     'django_tables2',     # https://github.com/bradleyayers/django-tables2
+    # 'nested_admin',       # https://github.com/theatlantic/django-nested-admin
     'db',
 ]
 
@@ -166,3 +168,7 @@ STATICFILES_DIRS = [
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Grappelli : https://django-grappelli.readthedocs.io/en/latest/customization.html
+GRAPPELLI_ADMIN_TITLE = 'MoFDB Admin'
+

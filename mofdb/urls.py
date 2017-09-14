@@ -17,6 +17,8 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [
+    url(r'^grappelli', include('grappelli.urls')),  # grappelli URLS
     url(r'^admin/', admin.site.urls),
     url(r'', include('db.urls')),
+    # url(r'^nested_admin/', include('nested_admin.urls')),
 ]
