@@ -9,7 +9,6 @@ from db.models import Mof
 from db.models import MofLigand
 from db.models import Reaction
 from db.models import ReactionData
-from db.models import ExperimentalData
 from db.models import ReactionCatalystCC
 from db.models import ReactionCatalystLigand
 from db.models import ReactionCatalystMof
@@ -19,7 +18,12 @@ from db.models import VisualizationCC
 from db.models import VisualizationLigand
 from db.models import VisualizationMof
 from db.models import VisualizationReaction
-
+import django_tables2 as tables
+from db.serializers import (ReactionCatalystCCSerializer,
+                            ReactionCatalystLigandSerializer,
+                            ReactionCatalystMofSerializer,
+                            ReactionReactantSerializer,
+                            ReactionProductSerializer)
 
 # Register your models here.
 
@@ -30,7 +34,6 @@ from db.models import VisualizationReaction
 admin.site.register(DataType)
 admin.site.register(Category)
 admin.site.register(FunctionalGroup)
-admin.site.register(ExperimentalData)
 # admin.site.register(MofLigand)
 # admin.site.register(ReactionData)
 # admin.site.register(ReactionCatalystCC)
@@ -79,6 +82,21 @@ class ReactionProductInline(admin.TabularInline):
     model = Reaction.products.through
     extra = 1
 
+# Tables {{{
+class GenericComponentTable(tables.Table):
+    component_type = tables.Column()
+    component_name = tables.Column()
+    component_id = tables.LinkColumn()
+    component_id = tables.Column()
+    functional_group_name = tables.Column()
+    chirality = tables.Column()
+    rate_constant = tables.Column()
+    conversion = tables.Column()
+    ee = tables.Column()
+    de = tables.Column()
+    yield_field = tables.Column()
+    amount = tables.Column()
+#}}}
 
 @admin.register(Reaction)
 class ReactionAdmin(admin.ModelAdmin):
@@ -91,6 +109,42 @@ class ReactionAdmin(admin.ModelAdmin):
         ReactionReactantInline,
         ReactionProductInline,
     )
+    list_display = ('name', 'all_catalysts_ligand')
+
+    def all_components_table(self, obj):
+        """ return a table with all the components """
+        # return "\n".join([a.name for a in obj.catalysts_ligand.exper()])
+        return str(obj)
+
+    change_form_template = 'db/admin/reaction/change_form.html'
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        # Queries
+        q_cc = ReactionCatalystCC.objects.filter(reaction_id=object_id)
+        q_ligand = ReactionCatalystLigand.objects.filter(reaction_id=object_id)
+        q_mof = ReactionCatalystMof.objects.filter(reaction_id=object_id)
+        q_reactant = ReactionReactant.objects.filter(reaction_id=object_id)
+        q_product = ReactionProduct.objects.filter(reaction_id=object_id)
+        # Serialize (they are [OrderedDict[(),], OrderedDict ])
+        s_cc = ReactionCatalystCCSerializer(q_cc, many=True)
+        s_ligand = ReactionCatalystLigandSerializer(q_ligand, many=True)
+        s_mof = ReactionCatalystMofSerializer(q_mof, many=True)
+        s_reactant = ReactionReactantSerializer(q_reactant, many=True)
+        s_product = ReactionProductSerializer(q_product, many=True)
+
+        data = s_cc.data + s_ligand.data + s_mof.data + s_reactant.data + s_product.data
+
+        # Create table from serialized data
+        # Ligand Table:
+        # table = ReactionCatalystLigandTable(q_ligand)
+        # extra_context['table'] = table
+        # Generic Table:
+        table = GenericComponentTable(data)
+        extra_context['table'] = table
+        return super().change_view(
+            request, object_id, form_url, extra_context=extra_context,
+        )
 
 # }}}
 

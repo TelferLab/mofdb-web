@@ -1,0 +1,15 @@
+{% extends "admin/change_form.html" %}
+{% load render_table from django_tables2 %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link href="/static/db.css" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+    <h2>Reaction components:</h2>
+    <div class="reaction_components_table">
+        {% render_table table %}
+    </div>
+    {{ block.super }}
+{% endblock %}

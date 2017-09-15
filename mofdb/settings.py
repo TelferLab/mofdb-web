@@ -32,6 +32,8 @@ DEBUG = True
 # Application definition
 
 INSTALLED_APPS = [
+    # 'dal',        # autocomplete-light
+    # 'dal_select2',
     'grappelli',  # https://django-grappelli.readthedocs.io/en/latest/customization.html
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,6 +51,7 @@ INSTALLED_APPS = [
     'django_cleanup',     # https://github.com/un1t/django-cleanup
     'django_tables2',     # https://github.com/bradleyayers/django-tables2
     # 'nested_admin',       # https://github.com/theatlantic/django-nested-admin
+    'rest_framework',
     'db',
 ]
 

@@ -1,5 +1,5 @@
-dj-database-url==0.4.1
 Django==1.11.1
+dj-database-url==0.4.1
 psycopg2==2.6.2
 gunicorn==19.6.0
 whitenoise==3.2
@@ -10,5 +10,7 @@ django-storages==1.6.5
 django-cleanup==1.0.1
 django-livereload-server==0.2.3
 django_tables2==1.10.0
-django-grapelli==2.10.1
+django-grappelli==2.10.1
+djangorestframework==3.6.4
+# django-autocomplete-light==3.2.10
 # django-nested-admin==3.0.20

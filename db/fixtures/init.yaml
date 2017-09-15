@@ -13,30 +13,6 @@
   fields:
     name: Urea
 
-- model: db.ExperimentalData
-  pk: 1
-  fields:
-    functional_group_id: 1
-    chirality: R
-    rate_constant: 0.5
-    conversion: 0.1
-    ee: 0.3
-    de: 0.3
-    yield_field: 0.3
-    amount: 2
-
-- model: db.ExperimentalData
-  pk: 2
-  fields:
-    functional_group_id: 1
-    chirality: L
-    rate_constant: 0.3
-    conversion: 0.2
-    ee: 0.4
-    de: 0.4
-    yield_field: 0.3
-    amount: 1
-
 - model: db.ChemicalCompound
   pk: 1
   fields:
@@ -107,19 +83,48 @@
   pk: 1
   fields:
     reaction_id: 1
-    catalyst_ligand_id: 1
-    experimental_data_id: 1
+    component_id: 1
+    functional_group_id: 1
+    chirality: R
+    rate_constant: 0.5
+    conversion: 0.1
+    ee: 0.3
+    de: 0.3
+    yield_field: 0.3
+    amount: 2
     notes: What?
+
+- model: db.ReactionCatalystLigand
+  pk: 2
+  fields:
+    reaction_id: 1
+    component_id: 2
+    functional_group_id: 1
+    chirality: L
+    rate_constant: 0.5
+    conversion: 0.1
+    ee: 0.3
+    de: 0.3
+    yield_field: 0.5
+    amount: 2
+    notes: What 2?
 
 - model: db.ReactionCatalystMof
   pk: 1
   fields:
     reaction_id: 1
-    catalyst_mof_id: 1
-    experimental_data_id: 2
+    component_id: 1
+    functional_group_id: 1
+    chirality: L
+    rate_constant: 0.3
+    conversion: 0.2
+    ee: 0.4
+    de: 0.4
+    yield_field: 0.3
+    amount: 1
 
 - model: db.ReactionProduct
   pk: 1
   fields:
     reaction_id: 1
-    product_id: 2
+    component_id: 2
