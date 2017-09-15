@@ -100,14 +100,17 @@ class GenericComponentTable(tables.Table):
 
 @admin.register(Reaction)
 class ReactionAdmin(admin.ModelAdmin):
+    # For order: if you want to mix fields, and inlines,
+    # have to modify template (change_form):
+    # https://stackoverflow.com/questions/1206991/django-admin-change-order-of-fields-including-inline-fields
     inlines = (
         VisualizationReactionInline,
-        ReactionDataInline,
+        ReactionReactantInline,
+        ReactionProductInline,
         ReactionCatalystCCInline,
         ReactionCatalystLigandInline,
         ReactionCatalystMofInline,
-        ReactionReactantInline,
-        ReactionProductInline,
+        ReactionDataInline,
     )
     list_display = ('name', 'all_catalysts_ligand')
 
