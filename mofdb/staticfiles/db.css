@@ -1,0 +1,25 @@
+.reaction_components_table {
+    margin-top: 10px;
+    padding-top: 5px;
+    /* border-bottom: 3px solid #ccc; */
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+.reaction {
+    border-top: 3px solid #ccc;
+    margin-top: 15px;
+    padding-top: 5px;
+    margin-bottom: 0
+}
+
+.reaction .name {
+    font-size: 30px;
+}
+.reaction .notes {
+}
+.field_sep {
+    border-top: 1px solid #ccc;
+    margin-top: 5px;
+    padding-top: 5px;
+    margin-bottom: 0
+}

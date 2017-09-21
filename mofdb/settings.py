@@ -32,6 +32,7 @@ DEBUG = True
 # Application definition
 
 INSTALLED_APPS = [
+    'db',
     # 'dal',        # autocomplete-light
     # 'dal_select2',
     'grappelli',  # https://django-grappelli.readthedocs.io/en/latest/customization.html
@@ -52,7 +53,6 @@ INSTALLED_APPS = [
     'django_tables2',     # https://github.com/bradleyayers/django-tables2
     # 'nested_admin',       # https://github.com/theatlantic/django-nested-admin
     'rest_framework',
-    'db',
 ]
 
 MIDDLEWARE = [
@@ -167,6 +167,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, 'static'),
 ]
+# swap order of defaults for grappelli
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+]
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
@@ -175,3 +180,15 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Grappelli : https://django-grappelli.readthedocs.io/en/latest/customization.html
 GRAPPELLI_ADMIN_TITLE = 'MoFDB Admin'
 
+GRAPPELLI_AUTOCOMPLETE_SEARCH_FIELDS = {
+    "db": {
+        "baseligand": ("id__iexact", "name__icontains",),
+        "ligand": ("id__iexact", "name__icontains",),
+        "mof": ("id__iexact", "name__icontains",),
+        "chemicalcompound": ("id__iexact", "name__icontains",),
+        "datatype": ("id__iexact", "name__type",),
+        "category": ("id__iexact", "name__icontains",),
+        "functionalgroup": ("id__iexact", "name__icontains",),
+        "reaction": ("id__iexact", "name__icontains",),
+    }
+}

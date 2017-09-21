@@ -82,9 +82,9 @@
 - model: db.ReactionCatalystLigand
   pk: 1
   fields:
-    reaction_id: 1
-    component_id: 1
-    functional_group_id: 1
+    reaction: 1
+    component: 1
+    functional_group: 1
     chirality: R
     rate_constant: 0.5
     conversion: 0.1
@@ -97,9 +97,9 @@
 - model: db.ReactionCatalystLigand
   pk: 2
   fields:
-    reaction_id: 1
-    component_id: 2
-    functional_group_id: 1
+    reaction: 1
+    component: 2
+    functional_group: 1
     chirality: L
     rate_constant: 0.5
     conversion: 0.1
@@ -112,9 +112,9 @@
 - model: db.ReactionCatalystMof
   pk: 1
   fields:
-    reaction_id: 1
-    component_id: 1
-    functional_group_id: 1
+    reaction: 1
+    component: 1
+    functional_group: 1
     chirality: L
     rate_constant: 0.3
     conversion: 0.2
@@ -126,5 +126,5 @@
 - model: db.ReactionProduct
   pk: 1
   fields:
-    reaction_id: 1
-    component_id: 2
+    reaction: 1
+    component: 2

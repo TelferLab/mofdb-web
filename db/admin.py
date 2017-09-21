@@ -4,9 +4,9 @@ from db.models import Category
 from db.models import ChemicalCompound
 from db.models import DataType
 from db.models import FunctionalGroup
+from db.models import BaseLigand
 from db.models import Ligand
 from db.models import Mof
-from db.models import MofLigand
 from db.models import Reaction
 from db.models import ReactionData
 from db.models import ReactionCatalystCC
@@ -25,27 +25,37 @@ from db.serializers import (ReactionCatalystCCSerializer,
                             ReactionReactantSerializer,
                             ReactionProductSerializer)
 
+# Tables {{{
+class GenericComponentTable(tables.Table):
+    component_type = tables.Column()
+    component_name = tables.Column()
+    # component = tables.LinkColumn()
+    component = tables.Column()
+    functional_group_name = tables.Column()
+    chirality = tables.Column()
+    rate_constant = tables.Column()
+    conversion = tables.Column()
+    ee = tables.Column()
+    de = tables.Column()
+    yield_field = tables.Column()
+    amount = tables.Column()
+# }}}
+
 # Register your models here.
+@admin.register(DataType)
+class DataTypeAdmin(admin.ModelAdmin):
+    search_fields = ('name',)
+    list_display = ('name',)
 
-# admin.site.register(ChemicalCompound)
-# admin.site.register(Reaction)
-# admin.site.register(Ligand)
-# admin.site.register(Mof)
-admin.site.register(DataType)
-admin.site.register(Category)
-admin.site.register(FunctionalGroup)
-# admin.site.register(MofLigand)
-# admin.site.register(ReactionData)
-# admin.site.register(ReactionCatalystCC)
-# admin.site.register(ReactionCatalystLigand)
-# admin.site.register(ReactionCatalystMof)
-# admin.site.register(ReactionReactant)
-# admin.site.register(ReactionProduct)
-# admin.site.register(VisualizationCC)
-# admin.site.register(VisualizationLigand)
-# admin.site.register(VisualizationMof)
-# admin.site.register(VisualizationReaction)
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    search_fields = ('name',)
+    list_display = ('name',)
 
+@admin.register(FunctionalGroup)
+class FunctionalGroupAdmin(admin.ModelAdmin):
+    search_fields = ('name',)
+    list_display = ('name',)
 
 # Reaction {{{
 class VisualizationReactionInline(admin.TabularInline):
@@ -67,6 +77,10 @@ class ReactionCatalystCCInline(admin.TabularInline):
     extra = 1
     verbose_name = "Catalyst: Chemical Compound"
     verbose_name_plural = "Catalysts: Chemical Compounds"
+    raw_id_fields = ('component', 'functional_group')
+    autocomplete_lookup_fields = {
+        'fk': ['component', 'functional_group']
+    }
 
 
 class ReactionCatalystLigandInline(admin.TabularInline):
@@ -75,6 +89,10 @@ class ReactionCatalystLigandInline(admin.TabularInline):
     verbose_name = "Catalyst: Ligand"
     verbose_name_plural = "Catalyst: Ligands"
     verbose_name_plural = "Catalysts: Ligands"
+    raw_id_fields = ('component', 'functional_group')
+    autocomplete_lookup_fields = {
+        'fk': ['component', 'functional_group']
+    }
 
 
 class ReactionCatalystMofInline(admin.TabularInline):
@@ -82,6 +100,10 @@ class ReactionCatalystMofInline(admin.TabularInline):
     extra = 1
     verbose_name = "Catalyst: Mof"
     verbose_name_plural = "Catalysts: Mofs"
+    raw_id_fields = ('component', 'functional_group')
+    autocomplete_lookup_fields = {
+        'fk': ['component', 'functional_group']
+    }
 
 
 class ReactionReactantInline(admin.TabularInline):
@@ -89,6 +111,10 @@ class ReactionReactantInline(admin.TabularInline):
     extra = 1
     verbose_name = "Reactant"
     verbose_name_plural = "Reactants"
+    raw_id_fields = ('component',)
+    autocomplete_lookup_fields = {
+        'fk': ['component']
+    }
 
 
 class ReactionProductInline(admin.TabularInline):
@@ -96,28 +122,24 @@ class ReactionProductInline(admin.TabularInline):
     extra = 1
     verbose_name = "Product"
     verbose_name_plural = "Products"
+    raw_id_fields = ('component',)
+    autocomplete_lookup_fields = {
+        'fk': ['component']
+    }
 
-# Tables {{{
-class GenericComponentTable(tables.Table):
-    component_type = tables.Column()
-    component_name = tables.Column()
-    component_id = tables.LinkColumn()
-    component_id = tables.Column()
-    functional_group_name = tables.Column()
-    chirality = tables.Column()
-    rate_constant = tables.Column()
-    conversion = tables.Column()
-    ee = tables.Column()
-    de = tables.Column()
-    yield_field = tables.Column()
-    amount = tables.Column()
-# }}}
 
 @admin.register(Reaction)
 class ReactionAdmin(admin.ModelAdmin):
     # For order: if you want to mix fields, and inlines,
     # have to modify template (change_form):
     # https://stackoverflow.com/questions/1206991/django-admin-change-order-of-fields-including-inline-fields
+    search_fields = ('name',
+                     'catalysts_cc__name',
+                     'catalysts_ligand__name',
+                     'catalysts_mof__name',
+                     'reactants__name',
+                     'products__name',
+                     )
     inlines = (
         VisualizationReactionInline,
         ReactionReactantInline,
@@ -139,11 +161,11 @@ class ReactionAdmin(admin.ModelAdmin):
     def change_view(self, request, object_id, form_url='', extra_context=None):
         extra_context = extra_context or {}
         # Queries
-        q_cc = ReactionCatalystCC.objects.filter(reaction_id=object_id)
-        q_ligand = ReactionCatalystLigand.objects.filter(reaction_id=object_id)
-        q_mof = ReactionCatalystMof.objects.filter(reaction_id=object_id)
-        q_reactant = ReactionReactant.objects.filter(reaction_id=object_id)
-        q_product = ReactionProduct.objects.filter(reaction_id=object_id)
+        q_cc = ReactionCatalystCC.objects.filter(reaction=object_id)
+        q_ligand = ReactionCatalystLigand.objects.filter(reaction=object_id)
+        q_mof = ReactionCatalystMof.objects.filter(reaction=object_id)
+        q_reactant = ReactionReactant.objects.filter(reaction=object_id)
+        q_product = ReactionProduct.objects.filter(reaction=object_id)
         # Serialize (they are [OrderedDict[(),], OrderedDict ])
         s_cc = ReactionCatalystCCSerializer(q_cc, many=True)
         s_ligand = ReactionCatalystLigandSerializer(q_ligand, many=True)
@@ -175,6 +197,17 @@ class VisualizationCCInline(admin.TabularInline):
 
 @admin.register(ChemicalCompound)
 class ChemicalCompoundAdmin(admin.ModelAdmin):
+    search_fields = ('name',
+                     'nick',
+                     'formula',
+                     )
+    list_display = ('name',
+                    'nick',
+                    'formula',
+                    'synthesis',
+                    'analysis',
+                    'mass',
+                    )
     inlines = (
         VisualizationCCInline,
     )
@@ -187,11 +220,41 @@ class VisualizationLigandInline(admin.TabularInline):
     extra = 1
 
 
+@admin.register(BaseLigand)
+class BaseLigandAdmin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index, but allowing edit/add new from Ligand.
+        """
+        return {}
+
 @admin.register(Ligand)
 class LigandAdmin(admin.ModelAdmin):
+    search_fields = ('name',
+                     'nick',
+                     'formula',
+                     'base_ligand__name',
+                     )
+    list_display = ('name',
+                    'nick',
+                    'formula',
+                    'synthesis',
+                    'analysis',
+                    'mass',
+                    'category_name',
+                    'functional_group_name',
+                    'base_ligand_name',
+                    )
     inlines = (
         VisualizationLigandInline,
     )
+
+    # Autocomplete: requires grappelli:
+    # http://django-grappelli.readthedocs.io/en/latest/customization.html
+    raw_id_fields = ('category', 'functional_group', 'base_ligand',)
+    autocomplete_lookup_fields = {
+        'fk': ['category', 'functional_group', 'base_ligand'],
+    }
 # }}}
 
 
@@ -208,6 +271,20 @@ class VisualizationMofInline(admin.TabularInline):
 
 @admin.register(Mof)
 class MofAdmin(admin.ModelAdmin):
+    search_fields = ('name',
+                     'nick',
+                     'formula',
+                     'ligands__name',
+                     )
+    list_display = ('name',
+                    'nick',
+                    'formula',
+                    'synthesis',
+                    'analysis',
+                    'mass',
+                    'topology',
+                    'all_ligands',
+                    )
     inlines = (
         VisualizationMofInline,
         MofLigandInline,

@@ -14,6 +14,7 @@ from django.core.validators import MinValueValidator
 from enumfields import EnumField
 from enumfields import Enum  # Uses Ethan Furman's "enum34" backport
 from django.urls import reverse  # for get_absolute_url
+from django.contrib import admin
 
 class Chirality(Enum):
     R = 'right'
@@ -68,10 +69,10 @@ class ChemicalCompound(models.Model):
 
 class DataType(models.Model):
     id = models.AutoField(primary_key=True)
-    type = models.CharField(max_length=45, blank=True)
+    name = models.CharField(max_length=45, blank=True)
 
     def __str__(self):
-        return self.type
+        return self.name
 
     def get_absolute_url(self):
         return reverse('datatype.views.details', args=[str(self.id)])
@@ -87,20 +88,22 @@ class FunctionalGroup(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('functionalgroup.views.details', args=[str(self.id)])
+
     class Meta:
         db_table = 'FunctionalGroup'
 
 
 class BaseLigand(models.Model):
     id = models.AutoField(primary_key=True)
-    base_name = models.CharField(max_length=200, blank=True)
-    base_ligand = models.ForeignKey(
-        'Ligand',
-        on_delete=models.DO_NOTHING,
-        blank=True, null=True)
+    name = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
-        return self.base_name
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('baseligand.views.details', args=[str(self.id)])
 
     class Meta:
         db_table = 'BaseLigand'
@@ -120,11 +123,13 @@ class Ligand(models.Model):
     category = models.ForeignKey(
         Category,
         on_delete=models.DO_NOTHING,
+        related_name='ligands',
         blank=True, null=True)
 
     functional_group = models.ForeignKey(
         FunctionalGroup,
         on_delete=models.DO_NOTHING,
+        related_name='ligands',
         blank=True, null=True)
     connections = models.PositiveIntegerField(blank=True, null=True)
     chirality = EnumField(Chirality, max_length=5, blank=True, null=True)
@@ -132,10 +137,26 @@ class Ligand(models.Model):
         BaseLigand,
         on_delete=models.DO_NOTHING,
         db_column='base_ligand',
+        related_name='ligands',
         blank=True, null=True)
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('ligand.views.details', args=[str(self.id)])
+
+    @property
+    def category_name(self):
+        return self.category.__str__
+
+    @property
+    def functional_group_name(self):
+        return self.functional_group.__str__
+
+    @property
+    def base_ligand_name(self):
+        return self.base_ligand.__str__
 
     class Meta:
         db_table = 'Ligand'
@@ -161,6 +182,13 @@ class Mof(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('mof.views.details', args=[str(self.id)])
+
+    @property
+    def all_ligands(self):
+        return ', '.join([a.name for a in self.ligands.all()])
 
     class Meta:
         db_table = 'Mof'
@@ -189,41 +217,44 @@ class Reaction(models.Model):
     catalysts_cc = models.ManyToManyField(
         ChemicalCompound,
         through='ReactionCatalystCC',
-        through_fields=('reaction_id', 'component_id'),
+        through_fields=('reaction', 'component'),
         related_name='reaction_catalysts',
         blank=True,
     )
     catalysts_ligand = models.ManyToManyField(
         Ligand,
         through='ReactionCatalystLigand',
-        through_fields=('reaction_id', 'component_id'),
+        through_fields=('reaction', 'component'),
         related_name='reaction_catalysts',
         blank=True,
     )
     catalysts_mof = models.ManyToManyField(
         Mof,
         through='ReactionCatalystMof',
-        through_fields=('reaction_id', 'component_id'),
+        through_fields=('reaction', 'component'),
         related_name='reaction_catalysts',
         blank=True,
     )
     reactants = models.ManyToManyField(
         ChemicalCompound,
         through='ReactionReactant',
-        through_fields=('reaction_id', 'component_id'),
+        through_fields=('reaction', 'component'),
         related_name='reaction_reactants',
         blank=True,
     )
     products = models.ManyToManyField(
         ChemicalCompound,
         through='ReactionProduct',
-        through_fields=('reaction_id', 'component_id'),
+        through_fields=('reaction', 'component'),
         related_name='reaction_products',
         blank=True,
     )
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('reaction.views.details', args=[str(self.id)])
 
     @property
     def all_catalysts_cc(self):
@@ -251,7 +282,7 @@ class Reaction(models.Model):
 
 class ReactionData(models.Model):
     id = models.AutoField(primary_key=True)
-    reaction_id = models.ForeignKey(
+    reaction = models.ForeignKey(
         Reaction,
         on_delete=models.CASCADE,
         blank=True, null=True)
@@ -270,15 +301,13 @@ class ReactionData(models.Model):
 
 class ReactionCatalystCC(models.Model):
     id = models.AutoField(primary_key=True)
-    reaction_id = models.ForeignKey(
+    reaction = models.ForeignKey(
         Reaction,
-        on_delete=models.DO_NOTHING,
-        related_name='catalyst_cc')
-    component_id = models.ForeignKey(
+        on_delete=models.DO_NOTHING)
+    component = models.ForeignKey(
         ChemicalCompound,
-        on_delete=models.DO_NOTHING,
-        related_name='reaction_catalyst')
-    functional_group_id = models.ForeignKey(
+        on_delete=models.DO_NOTHING)
+    functional_group = models.ForeignKey(
         FunctionalGroup,
         on_delete=models.DO_NOTHING,
         blank=True, null=True)
@@ -301,15 +330,15 @@ class ReactionCatalystCC(models.Model):
 
     @property
     def reaction_name(self):
-        return self.reaction_id.name
+        return self.reaction.name
 
     @property
     def component_name(self):
-        return self.component_id.name
+        return self.component.name
 
     @property
     def functional_group_name(self):
-        return self.functional_group_id.__str__
+        return self.functional_group.__str__
 
     class Meta:
         db_table = 'Reaction_Catalyst_CC'
@@ -317,15 +346,13 @@ class ReactionCatalystCC(models.Model):
 
 class ReactionCatalystLigand(models.Model):
     id = models.AutoField(primary_key=True)
-    reaction_id = models.ForeignKey(
+    reaction = models.ForeignKey(
         Reaction,
-        on_delete=models.DO_NOTHING,
-        related_name='catalyst_ligand')
-    component_id = models.ForeignKey(
+        on_delete=models.DO_NOTHING)
+    component = models.ForeignKey(
         Ligand,
-        on_delete=models.DO_NOTHING,
-        related_name='reaction_catalyst')
-    functional_group_id = models.ForeignKey(
+        on_delete=models.DO_NOTHING)
+    functional_group = models.ForeignKey(
         FunctionalGroup,
         on_delete=models.DO_NOTHING,
         blank=True, null=True)
@@ -348,15 +375,15 @@ class ReactionCatalystLigand(models.Model):
 
     @property
     def reaction_name(self):
-        return self.reaction_id.name
+        return self.reaction.name
 
     @property
     def component_name(self):
-        return self.component_id.name
+        return self.component.name
 
     @property
     def functional_group_name(self):
-        return self.functional_group_id.__str__
+        return self.functional_group.__str__
 
     class Meta:
         db_table = 'Reaction_Catalyst_Ligand'
@@ -364,15 +391,13 @@ class ReactionCatalystLigand(models.Model):
 
 class ReactionCatalystMof(models.Model):
     id = models.AutoField(primary_key=True)
-    reaction_id = models.ForeignKey(
+    reaction = models.ForeignKey(
         Reaction,
-        on_delete=models.DO_NOTHING,
-        related_name='catalyst_mof')
-    component_id = models.ForeignKey(
+        on_delete=models.DO_NOTHING)
+    component = models.ForeignKey(
         Mof,
-        on_delete=models.DO_NOTHING,
-        related_name='reaction_catalyst')
-    functional_group_id = models.ForeignKey(
+        on_delete=models.DO_NOTHING)
+    functional_group = models.ForeignKey(
         FunctionalGroup,
         on_delete=models.DO_NOTHING,
         blank=True, null=True)
@@ -395,15 +420,15 @@ class ReactionCatalystMof(models.Model):
 
     @property
     def reaction_name(self):
-        return self.reaction_id.name
+        return self.reaction.name
 
     @property
     def component_name(self):
-        return self.component_id.name
+        return self.component.name
 
     @property
     def functional_group_name(self):
-        return self.functional_group_id.__str__
+        return self.functional_group.__str__
 
     class Meta:
         db_table = 'Reaction_Catalyst_Mof'
@@ -411,13 +436,12 @@ class ReactionCatalystMof(models.Model):
 
 class ReactionProduct(models.Model):
     id = models.AutoField(primary_key=True)
-    reaction_id = models.ForeignKey(
+    reaction = models.ForeignKey(
         Reaction,
         on_delete=models.DO_NOTHING)
-    component_id = models.ForeignKey(
+    component = models.ForeignKey(
         ChemicalCompound,
-        on_delete=models.DO_NOTHING,
-        related_name='reaction_product')
+        on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return str(self.id)
@@ -428,15 +452,15 @@ class ReactionProduct(models.Model):
 
     @property
     def reaction_name(self):
-        return self.reaction_id.name
+        return self.reaction.name
 
     @property
     def component_name(self):
-        return self.component_id.name
+        return self.component.name
 
     @property
     def functional_group_name(self):
-        return self.functional_group_id.__str__
+        return self.functional_group.__str__
 
     class Meta:
         db_table = 'Reaction_Product'
@@ -447,10 +471,9 @@ class ReactionReactant(models.Model):
     reaction = models.ForeignKey(
         Reaction,
         on_delete=models.DO_NOTHING)
-    component_id = models.ForeignKey(
+    component = models.ForeignKey(
         ChemicalCompound,
-        on_delete=models.DO_NOTHING,
-        related_name='reaction_reactant')
+        on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return str(self.id)
@@ -461,15 +484,15 @@ class ReactionReactant(models.Model):
 
     @property
     def reaction_name(self):
-        return self.reaction_id.name
+        return self.reaction.name
 
     @property
     def component_name(self):
-        return self.component_id.name
+        return self.component.name
 
     @property
     def functional_group_name(self):
-        return self.functional_group_id.__str__
+        return self.functional_group.__str__
 
     class Meta:
         db_table = 'Reaction_Reactant'
@@ -528,7 +551,7 @@ class VisualizationReaction(models.Model):
 
 # class ExperimentalData(models.Model):
 #     id = models.AutoField(primary_key=True)
-#     functional_group_id = models.ForeignKey(
+#     functional_group = models.ForeignKey(
 #         FunctionalGroup,
 #         on_delete=models.DO_NOTHING,
 #         blank=True, null=True)
@@ -546,5 +569,3 @@ class VisualizationReaction(models.Model):
 #
 #     class Meta:
 #         db_table = 'ExperimentalData'
-
-
