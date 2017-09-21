@@ -51,36 +51,51 @@ admin.site.register(FunctionalGroup)
 class VisualizationReactionInline(admin.TabularInline):
     model = VisualizationReaction
     extra = 1
+    verbose_name = "Visualization"
+    verbose_name_plural = "Visualizations"
 
 
 class ReactionDataInline(admin.TabularInline):
     model = ReactionData
     extra = 1
+    verbose_name = "Reaction Data"
+    verbose_name_plural = "Reaction Datas"
 
 
 class ReactionCatalystCCInline(admin.TabularInline):
     model = Reaction.catalysts_cc.through
     extra = 1
+    verbose_name = "Catalyst: Chemical Compound"
+    verbose_name_plural = "Catalysts: Chemical Compounds"
 
 
 class ReactionCatalystLigandInline(admin.TabularInline):
     model = Reaction.catalysts_ligand.through
     extra = 1
+    verbose_name = "Catalyst: Ligand"
+    verbose_name_plural = "Catalyst: Ligands"
+    verbose_name_plural = "Catalysts: Ligands"
 
 
 class ReactionCatalystMofInline(admin.TabularInline):
     model = Reaction.catalysts_mof.through
     extra = 1
+    verbose_name = "Catalyst: Mof"
+    verbose_name_plural = "Catalysts: Mofs"
 
 
 class ReactionReactantInline(admin.TabularInline):
     model = Reaction.reactants.through
     extra = 1
+    verbose_name = "Reactant"
+    verbose_name_plural = "Reactants"
 
 
 class ReactionProductInline(admin.TabularInline):
     model = Reaction.products.through
     extra = 1
+    verbose_name = "Product"
+    verbose_name_plural = "Products"
 
 # Tables {{{
 class GenericComponentTable(tables.Table):
@@ -96,7 +111,7 @@ class GenericComponentTable(tables.Table):
     de = tables.Column()
     yield_field = tables.Column()
     amount = tables.Column()
-#}}}
+# }}}
 
 @admin.register(Reaction)
 class ReactionAdmin(admin.ModelAdmin):

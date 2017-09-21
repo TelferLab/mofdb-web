@@ -13,6 +13,7 @@ from django.core.validators import MinValueValidator
 
 from enumfields import EnumField
 from enumfields import Enum  # Uses Ethan Furman's "enum34" backport
+from django.urls import reverse  # for get_absolute_url
 
 class Chirality(Enum):
     R = 'right'
@@ -34,9 +35,13 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('category.views.details', args=[str(self.id)])
+
     class Meta:
         db_table = 'Category'
-        verbose_name_plural = "Category"
+        verbose_name = "Category"
         verbose_name_plural = "Categories"
 
 
@@ -54,6 +59,9 @@ class ChemicalCompound(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('chemicalcompound.views.details', args=[str(self.id)])
+
     class Meta:
         db_table = 'ChemicalCompound'
 
@@ -64,6 +72,9 @@ class DataType(models.Model):
 
     def __str__(self):
         return self.type
+
+    def get_absolute_url(self):
+        return reverse('datatype.views.details', args=[str(self.id)])
 
     class Meta:
         db_table = 'DataType'

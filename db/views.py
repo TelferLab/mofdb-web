@@ -4,12 +4,6 @@ from db.models import ChemicalCompound
 from db.models import Ligand
 from db.models import Mof
 
-import django_tables2 as tables
-
-# class ExperimentalDataTable(tables.Table):
-#     class Meta:
-#         model = ExperimentalData
-
 # Create your views here.
 
 def reaction(request):
