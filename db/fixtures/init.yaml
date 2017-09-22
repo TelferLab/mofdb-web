@@ -1,7 +1,7 @@
 - model: db.DataType
   pk: 1
   fields:
-    type: NMR
+    name: NMR
 
 - model: db.Category
   pk: 1

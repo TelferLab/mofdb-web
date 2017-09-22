@@ -290,7 +290,7 @@ class ReactionData(models.Model):
         DataType,
         on_delete=models.DO_NOTHING,
         blank=True)
-    data_file = models.FileField()
+    data_file = models.FileField(upload_to="reaction_data/")
 
     def __str__(self):
         return str(self.id)
@@ -499,44 +499,49 @@ class ReactionReactant(models.Model):
 
 
 class VisualizationCC(models.Model):
-    id_chemical_compound = models.OneToOneField(
+    id = models.AutoField(primary_key=True)
+    chemical_compound = models.OneToOneField(
         ChemicalCompound,
         on_delete=models.DO_NOTHING,
-        primary_key=True)
-    chemdraw = models.FileField()
+        related_name="visualization")
+    chemdraw = models.FileField(upload_to="visualization/cc/")
 
     class Meta:
         db_table = 'VisualizationCC'
 
 
 class VisualizationLigand(models.Model):
-    id_ligand = models.OneToOneField(
+    id = models.AutoField(primary_key=True)
+    ligand = models.OneToOneField(
         Ligand,
         on_delete=models.DO_NOTHING,
-        primary_key=True)
-    chemdraw = models.FileField()
+        related_name="visualization")
+    chemdraw = models.FileField(upload_to="visualization/ligand/")
 
     class Meta:
         db_table = 'VisualizationLigand'
 
 
 class VisualizationMof(models.Model):
-    id_mof = models.OneToOneField(
+    id = models.AutoField(primary_key=True)
+    mof = models.OneToOneField(
         Mof,
         on_delete=models.DO_NOTHING,
-        primary_key=True)
-    cif = models.FileField(db_column='CIF')  # Field name made lowercase.
+        related_name="visualization")
+    cif = models.FileField(db_column='CIF',  # Field name made lowercase.
+                           upload_to="visualization/mof/cif/")
 
     class Meta:
         db_table = 'VisualizationMof'
 
 
 class VisualizationReaction(models.Model):
-    id_reaction = models.OneToOneField(
+    id = models.AutoField(primary_key=True)
+    reaction = models.OneToOneField(
         Reaction,
         on_delete=models.DO_NOTHING,
-        primary_key=True)
-    chemdraw = models.FileField()
+        related_name="visualization")
+    chemdraw = models.FileField(upload_to="visualization/reaction/")
 
     class Meta:
         db_table = 'VisualizationReaction'

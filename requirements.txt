@@ -14,3 +14,4 @@ django-grappelli==2.10.1
 djangorestframework==3.6.4
 # django-autocomplete-light==3.2.10
 # django-nested-admin==3.0.20
+-e git+https://github.com/CrossWaterBridge/django-grappelli-autocomplete-fk-edit-link.git@master#egg=django-grappelli-autocomplete-fk-edit-link

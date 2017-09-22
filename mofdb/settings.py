@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     # 'dal',        # autocomplete-light
     # 'dal_select2',
     'grappelli',  # https://django-grappelli.readthedocs.io/en/latest/customization.html
+    'grappelli_autocomplete_fk_edit_link',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -176,6 +177,9 @@ STATICFILES_FINDERS = [
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'databasefiles')
+MEDIA_URL = 'databasefiles/'
 
 # Grappelli : https://django-grappelli.readthedocs.io/en/latest/customization.html
 GRAPPELLI_ADMIN_TITLE = 'MoFDB Admin'

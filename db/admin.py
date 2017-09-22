@@ -25,6 +25,10 @@ from db.serializers import (ReactionCatalystCCSerializer,
                             ReactionReactantSerializer,
                             ReactionProductSerializer)
 
+# Might be reduntant in the future, check:
+# https://github.com/sehmaschine/django-grappelli/issues/618
+from grappelli_autocomplete_fk_edit_link import AutocompleteEditLinkAdminMixin
+
 # Tables {{{
 class GenericComponentTable(tables.Table):
     component_type = tables.Column()
@@ -83,7 +87,7 @@ class ReactionCatalystCCInline(admin.TabularInline):
     }
 
 
-class ReactionCatalystLigandInline(admin.TabularInline):
+class ReactionCatalystLigandInline( admin.TabularInline):
     model = Reaction.catalysts_ligand.through
     extra = 1
     verbose_name = "Catalyst: Ligand"
@@ -129,7 +133,7 @@ class ReactionProductInline(admin.TabularInline):
 
 
 @admin.register(Reaction)
-class ReactionAdmin(admin.ModelAdmin):
+class ReactionAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
     # For order: if you want to mix fields, and inlines,
     # have to modify template (change_form):
     # https://stackoverflow.com/questions/1206991/django-admin-change-order-of-fields-including-inline-fields
@@ -150,6 +154,12 @@ class ReactionAdmin(admin.ModelAdmin):
         ReactionDataInline,
     )
     list_display = ('name', 'all_catalysts_ligand')
+
+    class Media:
+        css = {
+            "all": ("admin/css/reaction/reaction.css",)
+        }
+        # js = ("")
 
     def all_components_table(self, obj):
         """ return a table with all the components """
