@@ -3,10 +3,15 @@
   fields:
     name: NMR
 
-- model: db.Category
+- model: db.LigandCategory
   pk: 1
   fields:
     name: Nitrogen
+
+- model: db.ReactionCategory
+  pk: 1
+  fields:
+    name: Efervescente
 
 - model: db.FunctionalGroup
   pk: 1
@@ -100,7 +105,7 @@
     reaction: 1
     component: 2
     functional_group: 1
-    chirality: L
+    chirality: S
     rate_constant: 0.5
     conversion: 0.1
     ee: 0.3
@@ -115,7 +120,7 @@
     reaction: 1
     component: 1
     functional_group: 1
-    chirality: L
+    chirality: S
     rate_constant: 0.3
     conversion: 0.2
     ee: 0.4

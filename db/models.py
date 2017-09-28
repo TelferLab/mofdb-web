@@ -18,53 +18,45 @@ from django.contrib import admin
 
 class Chirality(Enum):
     R = 'right'
-    L = 'left'
+    S = 'left'
     NONE = 'none'
 
 class ComponentType(Enum):
     CC = 'CC'
     LIGAND = 'Ligand'
     MOF = 'Mof'
-    REACTION = 'Reaction'
+    REACTANT = 'Reactant'
     PRODUCT = 'Product'
 
 
-class Category(models.Model):
+class LigandCategory(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=45, blank=True)
+    name = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        from django.urls import reverse
-        return reverse('category.views.details', args=[str(self.id)])
+        return reverse('ligandcategory.views.details', args=[str(self.id)])
 
     class Meta:
-        db_table = 'Category'
-        verbose_name = "Category"
-        verbose_name_plural = "Categories"
+        verbose_name = "LigandCategory"
+        verbose_name_plural = "LigandCategories"
 
 
-class ChemicalCompound(models.Model):
+class ReactionCategory(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=200, blank=True)
-    nick = models.CharField(max_length=45, blank=True)
-    formula = models.CharField(max_length=45, blank=True)
-    synthesis = models.TextField(blank=True)
-    analysis = models.TextField(blank=True)
-    mass = models.FloatField(
-        validators=[MinValueValidator(0.0)],
-        blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('chemicalcompound.views.details', args=[str(self.id)])
+        return reverse('reactioncategory.views.details', args=[str(self.id)])
 
     class Meta:
-        db_table = 'ChemicalCompound'
+        verbose_name = "ReactionCategory"
+        verbose_name_plural = "ReactionCategories"
 
 
 class DataType(models.Model):
@@ -95,6 +87,33 @@ class FunctionalGroup(models.Model):
         db_table = 'FunctionalGroup'
 
 
+class ChemicalCompound(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=200, blank=True)
+    nick = models.CharField(max_length=100, blank=True)
+    formula = models.CharField(max_length=100, blank=True)
+    synthesis = models.TextField(blank=True)
+    analysis = models.TextField(blank=True)
+    mass = models.FloatField(
+        validators=[MinValueValidator(0.0)],
+        blank=True, null=True)
+    functional_group = models.ForeignKey(
+        FunctionalGroup,
+        on_delete=models.DO_NOTHING,
+        related_name='chemicalcompound',
+        blank=True, null=True)
+    chirality = EnumField(Chirality, max_length=5, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('chemicalcompound.views.details', args=[str(self.id)])
+
+    class Meta:
+        db_table = 'ChemicalCompound'
+
+
 class BaseLigand(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200, blank=True)
@@ -112,8 +131,8 @@ class BaseLigand(models.Model):
 class Ligand(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200, blank=True)
-    nick = models.CharField(max_length=45, blank=True)
-    formula = models.CharField(max_length=45, blank=True)
+    nick = models.CharField(max_length=100, blank=True)
+    formula = models.CharField(max_length=100, blank=True)
     synthesis = models.TextField(blank=True)
     analysis = models.TextField(blank=True)
     mass = models.FloatField(
@@ -121,7 +140,7 @@ class Ligand(models.Model):
         blank=True, null=True)
 
     category = models.ForeignKey(
-        Category,
+        LigandCategory,
         on_delete=models.DO_NOTHING,
         related_name='ligands',
         blank=True, null=True)
@@ -131,8 +150,8 @@ class Ligand(models.Model):
         on_delete=models.DO_NOTHING,
         related_name='ligands',
         blank=True, null=True)
-    connections = models.PositiveIntegerField(blank=True, null=True)
     chirality = EnumField(Chirality, max_length=5, blank=True, null=True)
+    connections = models.PositiveIntegerField(blank=True, null=True)
     base_ligand = models.ForeignKey(
         BaseLigand,
         on_delete=models.DO_NOTHING,
@@ -165,14 +184,14 @@ class Ligand(models.Model):
 class Mof(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200, blank=True)
-    nick = models.CharField(max_length=45, blank=True)
-    formula = models.CharField(max_length=45, blank=True)
+    nick = models.CharField(max_length=100, blank=True)
+    formula = models.CharField(max_length=100, blank=True)
     synthesis = models.TextField(blank=True)
     analysis = models.TextField(blank=True)
     mass = models.FloatField(
         validators=[MinValueValidator(0.0)],
         blank=True, null=True)
-    topology = models.TextField(blank=True)
+    topology = models.CharField(max_length=10, blank=True)
     ligands = models.ManyToManyField(
         Ligand,
         through='MofLigand',
@@ -214,6 +233,13 @@ class Reaction(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200, blank=True)
     notes = models.TextField(blank=True)
+
+    category = models.ForeignKey(
+        ReactionCategory,
+        on_delete=models.DO_NOTHING,
+        related_name='reactions',
+        blank=True, null=True)
+
     catalysts_cc = models.ManyToManyField(
         ChemicalCompound,
         through='ReactionCatalystCC',
@@ -284,7 +310,7 @@ class ReactionData(models.Model):
     id = models.AutoField(primary_key=True)
     reaction = models.ForeignKey(
         Reaction,
-        on_delete=models.CASCADE,
+        on_delete=models.DO_NOTHING,
         blank=True, null=True)
     data_type = models.ForeignKey(
         DataType,
@@ -307,11 +333,6 @@ class ReactionCatalystCC(models.Model):
     component = models.ForeignKey(
         ChemicalCompound,
         on_delete=models.DO_NOTHING)
-    functional_group = models.ForeignKey(
-        FunctionalGroup,
-        on_delete=models.DO_NOTHING,
-        blank=True, null=True)
-    chirality = EnumField(Chirality, max_length=5, blank=True, null=True)
     rate_constant = models.FloatField(blank=True, null=True)
     conversion = models.FloatField(blank=True, null=True)
     ee = models.FloatField(blank=True, null=True)
@@ -333,12 +354,24 @@ class ReactionCatalystCC(models.Model):
         return self.reaction.name
 
     @property
+    def reaction_category(self):
+        return self.reaction.category
+
+    @property
     def component_name(self):
         return self.component.name
 
     @property
-    def functional_group_name(self):
-        return self.functional_group.__str__
+    def component_nick(self):
+        return self.component.nick
+
+    @property
+    def component_functional_group(self):
+        return self.component.functional_group.name
+
+    @property
+    def component_chirality(self):
+        return self.component.chirality
 
     class Meta:
         db_table = 'Reaction_Catalyst_CC'
@@ -352,11 +385,6 @@ class ReactionCatalystLigand(models.Model):
     component = models.ForeignKey(
         Ligand,
         on_delete=models.DO_NOTHING)
-    functional_group = models.ForeignKey(
-        FunctionalGroup,
-        on_delete=models.DO_NOTHING,
-        blank=True, null=True)
-    chirality = EnumField(Chirality, max_length=5, blank=True, null=True)
     rate_constant = models.FloatField(blank=True, null=True)
     conversion = models.FloatField(blank=True, null=True)
     ee = models.FloatField(blank=True, null=True)
@@ -378,12 +406,24 @@ class ReactionCatalystLigand(models.Model):
         return self.reaction.name
 
     @property
+    def reaction_category(self):
+        return self.reaction.category
+
+    @property
     def component_name(self):
         return self.component.name
 
     @property
-    def functional_group_name(self):
-        return self.functional_group.__str__
+    def component_nick(self):
+        return self.component.nick
+
+    @property
+    def component_functional_group(self):
+        return self.component.functional_group.name
+
+    @property
+    def component_chirality(self):
+        return self.component.chirality
 
     class Meta:
         db_table = 'Reaction_Catalyst_Ligand'
@@ -397,11 +437,6 @@ class ReactionCatalystMof(models.Model):
     component = models.ForeignKey(
         Mof,
         on_delete=models.DO_NOTHING)
-    functional_group = models.ForeignKey(
-        FunctionalGroup,
-        on_delete=models.DO_NOTHING,
-        blank=True, null=True)
-    chirality = EnumField(Chirality, max_length=5, blank=True, null=True)
     rate_constant = models.FloatField(blank=True, null=True)
     conversion = models.FloatField(blank=True, null=True)
     ee = models.FloatField(blank=True, null=True)
@@ -423,12 +458,16 @@ class ReactionCatalystMof(models.Model):
         return self.reaction.name
 
     @property
+    def reaction_category(self):
+        return self.reaction.category
+
+    @property
     def component_name(self):
         return self.component.name
 
     @property
-    def functional_group_name(self):
-        return self.functional_group.__str__
+    def component_nick(self):
+        return self.component.nick
 
     class Meta:
         db_table = 'Reaction_Catalyst_Mof'
@@ -455,12 +494,24 @@ class ReactionProduct(models.Model):
         return self.reaction.name
 
     @property
+    def reaction_category(self):
+        return self.reaction.category.__str__
+
+    @property
     def component_name(self):
         return self.component.name
 
     @property
-    def functional_group_name(self):
-        return self.functional_group.__str__
+    def component_nick(self):
+        return self.component.nick
+
+    @property
+    def component_functional_group(self):
+        return self.component.functional_group.name
+
+    @property
+    def component_chirality(self):
+        return self.component.chirality
 
     class Meta:
         db_table = 'Reaction_Product'
@@ -480,19 +531,31 @@ class ReactionReactant(models.Model):
 
     @property
     def component_type(self):
-        return ComponentType.REACTION.label
+        return ComponentType.REACTANT.label
 
     @property
     def reaction_name(self):
         return self.reaction.name
 
     @property
+    def reaction_category(self):
+        return self.reaction.category.__str__
+
+    @property
     def component_name(self):
         return self.component.name
 
     @property
-    def functional_group_name(self):
-        return self.functional_group.__str__
+    def component_nick(self):
+        return self.component.nick
+
+    @property
+    def component_functional_group(self):
+        return self.component.functional_group.name
+
+    @property
+    def component_chirality(self):
+        return self.component.chirality
 
     class Meta:
         db_table = 'Reaction_Reactant'

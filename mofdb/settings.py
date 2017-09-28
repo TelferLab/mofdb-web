@@ -52,8 +52,9 @@ INSTALLED_APPS = [
     'storages',           # django-storages: https://github.com/jschneier/django-storages
     'django_cleanup',     # https://github.com/un1t/django-cleanup
     'django_tables2',     # https://github.com/bradleyayers/django-tables2
-    # 'nested_admin',       # https://github.com/theatlantic/django-nested-admin
+                          # 'nested_admin',       # https://github.com/theatlantic/django-nested-admin
     'rest_framework',
+    'debug_toolbar'      # django-debug-toolbar
 ]
 
 MIDDLEWARE = [
@@ -66,7 +67,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'livereload.middleware.LiveReloadScript',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+# Needed for DebugToolBar (only used in local dev)
+INTERNAL_IPS = ['127.0.0.1', ]
 
 ROOT_URLCONF = 'mofdb.urls'
 

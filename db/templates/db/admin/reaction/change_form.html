@@ -8,8 +8,17 @@
 
 {% block content %}
     <h2>Reaction components:</h2>
-    <div class="reaction_components_table">
-        {% render_table table %}
+    <h3>Catalysts:</h3>
+    <div class="reaction_components_table catalysts">
+        {% render_table table_catalysts %}
+    </div>
+    <h3>Reactants:</h3>
+    <div class="reaction_components_table reactants">
+        {% render_table table_reactants %}
+    </div>
+    <h3>Products:</h3>
+    <div class="reaction_components_table products">
+        {% render_table table_products %}
     </div>
     {{ block.super }}
 {% endblock %}
