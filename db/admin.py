@@ -19,45 +19,17 @@ from db.models import VisualizationCC
 from db.models import VisualizationLigand
 from db.models import VisualizationMof
 from db.models import VisualizationReaction
-import django_tables2 as tables
 from db.serializers import (ReactionCatalystCCSerializer,
                             ReactionCatalystLigandSerializer,
                             ReactionCatalystMofSerializer,
                             ReactionReactantSerializer,
                             ReactionProductSerializer)
-
+# from db.tables import (CatalystsTable,
+#                        ReactantsTable,
+#                        ProductsTable)
 # Might be reduntant in the future, check:
 # https://github.com/sehmaschine/django-grappelli/issues/618
 from grappelli_autocomplete_fk_edit_link import AutocompleteEditLinkAdminMixin
-
-# Tables {{{
-class CatalystsTable(tables.Table):
-    component_type = tables.Column()
-    component_name = tables.Column()
-    component_nick = tables.Column()
-    # component = tables.LinkColumn()
-    component = tables.Column()
-    functional_group_name = tables.Column()
-    chirality = tables.Column()
-    rate_constant = tables.Column()
-    conversion = tables.Column()
-    ee = tables.Column()
-    de = tables.Column()
-    yield_field = tables.Column()
-    amount = tables.Column()
-
-class ReactantsTable(tables.Table):
-    # component_type = tables.Column() #CC
-    component_name = tables.Column()
-    component_nick = tables.Column()
-    component = tables.Column()
-
-class ProductsTable(tables.Table):
-    # component_type = tables.Column() #CC
-    component_name = tables.Column()
-    component_nick = tables.Column()
-    component = tables.Column()
-# }}}
 
 # Register your models here.
 @admin.register(DataType)
@@ -183,39 +155,40 @@ class ReactionAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
 
     change_form_template = 'db/admin/reaction/change_form.html'
 
-    def change_view(self, request, object_id, form_url='', extra_context=None):
-        extra_context = extra_context or {}
-        # Queries
-        q_cc = ReactionCatalystCC.objects.filter(reaction=object_id)
-        q_ligand = ReactionCatalystLigand.objects.filter(reaction=object_id)
-        q_mof = ReactionCatalystMof.objects.filter(reaction=object_id)
-        q_reactant = ReactionReactant.objects.filter(reaction=object_id)
-        q_product = ReactionProduct.objects.filter(reaction=object_id)
-        # Serialize (they are [OrderedDict[(),], OrderedDict ])
-        s_cc = ReactionCatalystCCSerializer(q_cc, many=True, context={'request': request})
-        s_ligand = ReactionCatalystLigandSerializer(q_ligand, many=True, context={'request': request})
-        s_mof = ReactionCatalystMofSerializer(q_mof, many=True, context={'request': request})
-        s_reactant = ReactionReactantSerializer(q_reactant, many=True, context={'request': request})
-        s_product = ReactionProductSerializer(q_product, many=True, context={'request': request})
-
-        data_reactants = s_reactant.data
-        data_products = s_product.data
-        data_catalysts = s_cc.data + s_ligand.data + s_mof.data
-
-        # Create table from serialized data
-        # Ligand Table:
-        # table = ReactionCatalystLigandTable(q_ligand)
-        # extra_context['table'] = table
-        # Generic Table:
-        table_catalysts = CatalystsTable(data_catalysts)
-        extra_context['table_catalysts'] = table_catalysts
-        table_reactants = ReactantsTable(data_reactants)
-        extra_context['table_reactants'] = table_reactants
-        table_products = ProductsTable(data_products)
-        extra_context['table_products'] = table_products
-        return super().change_view(
-            request, object_id, form_url, extra_context=extra_context,
-        )
+    # Change view to add table information
+    # def change_view(self, request, object_id, form_url='', extra_context=None):
+    #     extra_context = extra_context or {}
+    #     # Queries
+    #     q_cc = ReactionCatalystCC.objects.filter(reaction=object_id)
+    #     q_ligand = ReactionCatalystLigand.objects.filter(reaction=object_id)
+    #     q_mof = ReactionCatalystMof.objects.filter(reaction=object_id)
+    #     q_reactant = ReactionReactant.objects.filter(reaction=object_id)
+    #     q_product = ReactionProduct.objects.filter(reaction=object_id)
+    #     # Serialize (they are [OrderedDict[(),], OrderedDict ])
+    #     s_cc = ReactionCatalystCCSerializer(q_cc, many=True, context={'request': request})
+    #     s_ligand = ReactionCatalystLigandSerializer(q_ligand, many=True, context={'request': request})
+    #     s_mof = ReactionCatalystMofSerializer(q_mof, many=True, context={'request': request})
+    #     s_reactant = ReactionReactantSerializer(q_reactant, many=True, context={'request': request})
+    #     s_product = ReactionProductSerializer(q_product, many=True, context={'request': request})
+    #
+    #     data_reactants = s_reactant.data
+    #     data_products = s_product.data
+    #     data_catalysts = s_cc.data + s_ligand.data + s_mof.data
+    #
+    #     # Create table from serialized data
+    #     # Ligand Table:
+    #     # table = ReactionCatalystLigandTable(q_ligand)
+    #     # extra_context['table'] = table
+    #     # Generic Table:
+    #     table_catalysts = CatalystsTable(data_catalysts)
+    #     extra_context['table_catalysts'] = table_catalysts
+    #     table_reactants = ReactantsTable(data_reactants)
+    #     extra_context['table_reactants'] = table_reactants
+    #     table_products = ProductsTable(data_products)
+    #     extra_context['table_products'] = table_products
+    #     return super().change_view(
+    #         request, object_id, form_url, extra_context=extra_context,
+    #     )
 
 # }}}
 

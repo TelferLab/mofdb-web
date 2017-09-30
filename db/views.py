@@ -11,7 +11,61 @@ from db.serializers import (ReactionCatalystCCSerializer,
                             ReactionReactantSerializer,
                             ReactionProductSerializer)
 from rest_framework.renderers import JSONRenderer
+from django.http import HttpResponse, JsonResponse
+import json
 # Create your views here.
+
+class ReactionListViewJSON(ListView):
+    model = Reaction
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        # Serialize Reactions
+        serializer = ReactionSerializer(queryset,
+                                        many=True, context={'request': request})
+        print(serializer)
+        print(serializer.data)
+        print(json.dumps(serializer.data))
+        return HttpResponse(json.dumps(serializer.data), content_type='application/json')
+
+def reaction_catalysts_JSON(request, pk):
+    try:
+        reaction = Reaction.objects.get(pk=pk)
+    except Reaction.DoesNotExist:
+        return HttpResponse(status=404)
+
+    # Serialize Reaction catalysts and add them
+    s_cc = ReactionCatalystCCSerializer(reaction.reactioncatalystcc_set.all(),
+                                        many=True, context={'request': request})
+    s_ligand = ReactionCatalystLigandSerializer(reaction.reactioncatalystligand_set.all(),
+                                                many=True, context={'request': request})
+    s_mof = ReactionCatalystMofSerializer(reaction.reactioncatalystmof_set.all(),
+                                          many=True, context={'request': request})
+
+    s_catalysts_data = s_cc.data + s_ligand.data + s_mof.data
+    return HttpResponse(json.dumps(s_catalysts_data), content_type='application/json')
+
+def reaction_reactants_JSON(request, pk):
+    try:
+        reaction = Reaction.objects.get(pk=pk)
+    except Reaction.DoesNotExist:
+        return HttpResponse(status=404)
+
+    # Serialize Reaction catalysts and add them
+    s_reactant = ReactionReactantSerializer(reaction.reactionreactant_set.all(),
+                                            many=True, context={'request': request})
+    return HttpResponse(json.dumps(s_reactant.data), content_type='application/json')
+
+def reaction_products_JSON(request, pk):
+    try:
+        reaction = Reaction.objects.get(pk=pk)
+    except Reaction.DoesNotExist:
+        return HttpResponse(status=404)
+
+    # Serialize Reaction catalysts and add them
+    s_product = ReactionProductSerializer(reaction.reactionproduct_set.all(),
+                                          many=True, context={'request': request})
+    return HttpResponse(json.dumps(s_product.data), content_type='application/json')
+
 
 def index(request):
     # Query main 4 components to create a dashboard
@@ -63,7 +117,6 @@ class ReactionDetailView(DetailView):
         data_reactants = s_reactant.data
         data_products = s_product.data
         data_catalysts = s_cc.data + s_ligand.data + s_mof.data
-        print(data_products)
         context['data_reactants'] = JSONRenderer().render(data_reactants)
         context['data_products'] = JSONRenderer().render(data_products)
         context['data_catalysts'] = JSONRenderer().render(data_catalysts)

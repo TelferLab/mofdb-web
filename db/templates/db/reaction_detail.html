@@ -1,30 +1,8 @@
-{% extends "db/base_site.html" %}
-{# {% load render_table from django_tables2 %} #}
-
-{% block javascripts %}
-  {{ block.super }}
-  <!-- Datatables -->
-  <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-  <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-  <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-  <script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-  <script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-  <script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-  <script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-  <script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-  <script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-  <script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-  <script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-  <script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-  <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
-  <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
-  <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
-  <!-- Custom -->
-  {# <script src="/static/build/js/reaction.js"></script> #}
-{% endblock javascripts %}
+{% extends "db/base_table_site.html" %}
 
 {% block stylesheets %}
   {{ block.super }}
+  <!-- Custom -->
   <link href="/static/db.css" rel="stylesheet">
 {% endblock stylesheets %}
 
@@ -35,91 +13,13 @@
       <p><h2>Name: {{ object.name }}</h2></p>
     </div>
     <div class="field_sep"></div>
-    <div class="notes">
-      <p>
-      <span class="title"><h2>Notes:</h2></span>
-      <span> {{ object.notes|linebreaks|escape }}</span>
-      </p>
-    </div>
-    <div class="field_sep"></div>
     <div class="category">
-      <p>
-      <span class="title"><h2>Category:</h2></span>
-      <span> {{ object.category }}</span>
-      </p>
+      <p><h2>Category: {{ object.category }}</h2> </p>
     </div>
     <div class="field_sep"></div>
-    <div class="catalysts">
+    <div class="container catalysts">
       <h2>Catalysts:</h2>
-      <div class="catalysts_cc">
-        <p><span class="title"><h4>CCs</h4></span></p>
-        <div class="m2m">
-          {% for component in object.catalysts_cc.all %}
-          <div class=component>
-            <a href="{{ component.get_absolute_url }}">{{ component.name }}</a>
-          </div>
-          {% empty %}
-          <p class=empty>None<p>
-          {% endfor %}
-        </div>
-      </div>
-    <div class="field_sep"></div>
-      <div class="catalysts_ligand">
-        <p><span class="title"><h4>Ligands</h4></span></p>
-        <div class="m2m">
-          {% for component in object.catalysts_ligand.all %}
-          <div class=component>
-            <a href="{{ component.get_absolute_url }}">{{ component.name }}</a>
-          </div>
-          {% empty %}
-          <p class=empty>None<p>
-          {% endfor %}
-        </div>
-      </div>
-    <div class="field_sep"></div>
-      <div class="catalysts_mof">
-        <p><span class="title"><h4>Mofs</h4></span></p>
-        <div class="m2m">
-          {% for component in object.catalysts_mof.all %}
-          <div class=component>
-            <a href="{{ component.get_absolute_url }}">{{ component.name }}</a>
-          </div>
-          {% empty %}
-          <p class=empty>None<p>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-    <div class="field_sep"></div>
-    <div class="reactants">
-      <p><span class="title"><h2>Reactants</h2></span></p>
-      <div class="m2m">
-        {% for component in object.reactants.all %}
-        <div class=component>
-          <a href="{{ component.get_absolute_url }}">{{ component.name }}</a>
-        </div>
-        {% empty %}
-        <p class=empty>None<p>
-        {% endfor %}
-      </div>
-    </div>
-    <div class="field_sep"></div>
-    <div class="products">
-      <p><span class="title"><h2>Products</h2></span>
-      <div class="m2m">
-        {% for component in object.produts.all %}
-        <div class=component>
-          <a href="{{ component.get_absolute_url }}">{{ component.name }}</a>
-        </div>
-        {% empty %}
-        <p class=empty>None<p>
-        {% endfor %}
-      </div>
-      </p>
-    </div>
-
-    <div class="container">
-      <table id="table-catalysts" class="table">
+      <table id="{{ object.id }}" class="table-catalysts table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
         <thead>
           <tr>
             {# <th>id</th> #}
@@ -132,38 +32,60 @@
             <th>De</th>
             <th>Yield</th>
             <th>Amount</th>
+            <th>url</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
     </div>
+    <div class="container reactants">
+      <h2>Reactants:</h2>
+      <table id="{{ object.id }}" class="table-reactants table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            {# <th>id</th> #}
+            <th>Name</th>
+            <th>Nick</th>
+            <th>url</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="container products">
+      <h2>Products:</h2>
+      <table id="{{ object.id }}" class="table-products table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            {# <th>id</th> #}
+            <th>Name</th>
+            <th>Nick</th>
+            <th>url</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="field_sep"></div>
+    <div class="notes">
+      <p>
+      <span class="title"><h2>Notes:</h2></span>
+      <span> {{ object.notes|linebreaks|escape }}</span>
+      </p>
+    </div>
 {# <script charset="utf-8"> #}
 {# var data_catalysts= {{ data_catalysts|escapejs }} #}
 {# </script> #}
-  <script charset="utf-8" type="text/javascript">
-console.log('run_catalysts_datatable-pre');
-var json = JSON.stringify({{ data_catalysts | safe }});
-  $(document).ready(function() {
-      console.log('run_catalysts_datatable');
-      $('#table-catalysts').DataTable({
-        "data": JSON.parse(json),
-        "columns": [
-          {# { "data": "id" }, #}
-          { "data": "component_type" },
-          { "data": "component_name" },
-          { "data": "component_nick" },
-          {# mofs have no functional group or chirality  #}
-          {# { "data": "component_functional_group" }, #}
-          {# { "data": "component_chirality" }, #}
-          { "data": "rate_constant" },
-          { "data": "conversion" },
-          { "data": "ee" },
-          { "data": "de" },
-          { "data": "yield_field" },
-          { "data": "amount" },
-        ]
-      } );
-  } );
-  </script>
 {% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <!-- Custom -->
+  <script src="/static/build/js/mofdb.js"></script>
+  <script charset="utf-8" type="text/javascript">
+display_datatable_reaction_catalysts({{ object.id }}, "{% url 'reaction.views.catalyststable' object.id %}")
+display_datatable_reaction_reactants({{ object.id }}, "{% url 'reaction.views.reactantstable' object.id %}")
+display_datatable_reaction_products({{ object.id }}, "{% url 'reaction.views.productstable' object.id %}")
+  </script>
+{% endblock javascripts %}
 <!-- vim: set ft=htmldjango: -->

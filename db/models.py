@@ -373,6 +373,10 @@ class ReactionCatalystCC(models.Model):
     def component_chirality(self):
         return self.component.chirality
 
+    @property
+    def component_url(self):
+        return self.component.get_absolute_url()
+
     class Meta:
         db_table = 'Reaction_Catalyst_CC'
 
@@ -425,6 +429,10 @@ class ReactionCatalystLigand(models.Model):
     def component_chirality(self):
         return self.component.chirality
 
+    @property
+    def component_url(self):
+        return self.component.get_absolute_url()
+
     class Meta:
         db_table = 'Reaction_Catalyst_Ligand'
 
@@ -468,6 +476,10 @@ class ReactionCatalystMof(models.Model):
     @property
     def component_nick(self):
         return self.component.nick
+
+    @property
+    def component_url(self):
+        return self.component.get_absolute_url()
 
     class Meta:
         db_table = 'Reaction_Catalyst_Mof'
@@ -513,6 +525,10 @@ class ReactionProduct(models.Model):
     def component_chirality(self):
         return self.component.chirality
 
+    @property
+    def component_url(self):
+        return self.component.get_absolute_url()
+
     class Meta:
         db_table = 'Reaction_Product'
 
@@ -556,6 +572,10 @@ class ReactionReactant(models.Model):
     @property
     def component_chirality(self):
         return self.component.chirality
+
+    @property
+    def component_url(self):
+        return self.component.get_absolute_url()
 
     class Meta:
         db_table = 'Reaction_Reactant'

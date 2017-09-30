@@ -6,19 +6,20 @@
   <link href="/static/db.css" rel="stylesheet">
 {% endblock stylesheets %}
 
-{% block content %}
-    <h2>Reaction components:</h2>
-    <h3>Catalysts:</h3>
-    <div class="reaction_components_table catalysts">
-        {% render_table table_catalysts %}
-    </div>
-    <h3>Reactants:</h3>
-    <div class="reaction_components_table reactants">
-        {% render_table table_reactants %}
-    </div>
-    <h3>Products:</h3>
-    <div class="reaction_components_table products">
-        {% render_table table_products %}
-    </div>
-    {{ block.super }}
-{% endblock %}
+{# django_tables2 Tables #}
+{# {% block content %} #}
+{#     <h2>Reaction components:</h2> #}
+{#     <h3>Catalysts:</h3> #}
+{#     <div class="reaction_components_table catalysts"> #}
+{#         {% render_table table_catalysts %} #}
+{#     </div> #}
+{#     <h3>Reactants:</h3> #}
+{#     <div class="reaction_components_table reactants"> #}
+{#         {% render_table table_reactants %} #}
+{#     </div> #}
+{#     <h3>Products:</h3> #}
+{#     <div class="reaction_components_table products"> #}
+{#         {% render_table table_products %} #}
+{#     </div> #}
+{#     {{ block.super }} #}
+{# {% endblock %} #}
