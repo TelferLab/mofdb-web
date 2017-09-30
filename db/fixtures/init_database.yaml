@@ -1,0 +1,188 @@
+- model: db.ligandcategory
+  pk: 1
+  fields: {name: Nitrogen}
+- model: db.ligandcategory
+  pk: 2
+  fields: {name: Carboxylate}
+- model: db.chemicalcompound
+  pk: 1
+  fields: {name: Acetone, nick: '', formula: C3H6O, synthesis: '', analysis: '', mass: 58.08}
+- model: db.chemicalcompound
+  pk: 2
+  fields: {name: 4-((4-methoxyphenyl)amino)-4-phenylbutan-2-one, nick: manich-product-1,
+    formula: C17H19NO2, synthesis: '', analysis: '', mass: 269.34}
+- model: db.chemicalcompound
+  pk: 3
+  fields: {name: Benzaldehyde, nick: '', formula: '', synthesis: '', analysis: '',
+    mass: null}
+- model: db.chemicalcompound
+  pk: 4
+  fields: {name: p-anisaldehyde, nick: '', formula: '', synthesis: '', analysis: '',
+    mass: null}
+- model: db.chemicalcompound
+  pk: 5
+  fields: {name: p-nitrobenzaldehyde, nick: '', formula: '', synthesis: '', analysis: '',
+    mass: null}
+- model: db.chemicalcompound
+  pk: 6
+  fields: {name: nitromethane, nick: MeNO2, formula: CH3NO2, synthesis: '', analysis: '',
+    mass: null}
+- model: db.chemicalcompound
+  pk: 7
+  fields: {name: dimethylformamide, nick: DMF, formula: '', synthesis: '', analysis: '',
+    mass: null}
+- model: db.datatype
+  pk: 1
+  fields: {name: NMR}
+- model: db.datatype
+  pk: 2
+  fields: {name: PXRD}
+- model: db.datatype
+  pk: 3
+  fields: {name: HPLC}
+- model: db.datatype
+  pk: 4
+  fields: {name: SCXRD}
+- model: db.functionalgroup
+  pk: 1
+  fields: {name: Urea}
+- model: db.functionalgroup
+  pk: 2
+  fields: {name: primary amine}
+- model: db.functionalgroup
+  pk: 3
+  fields: {name: secondary amine}
+- model: db.functionalgroup
+  pk: 4
+  fields: {name: tertiary amine}
+- model: db.functionalgroup
+  pk: 5
+  fields: {name: guanidine}
+- model: db.ligand
+  pk: 1
+  fields: {name: Terephthalic acid, nick: BDC, formula: C8H604, synthesis: '', analysis: '',
+    mass: 166.13, category: 2, functional_group: null, connections: 2, chirality: null,
+    base_ligand: null}
+- model: db.ligand
+  pk: 2
+  fields: {name: '2-guanidino-[1,1''-biphenyl]-4,4''-dicarboxylic acid', nick: BPDC-asym-gua,
+    formula: C15H13N3O4, synthesis: '', analysis: '', mass: null, category: null,
+    functional_group: null, connections: null, chirality: null, base_ligand: null}
+- model: db.ligand
+  pk: 3
+  fields: {name: '5,5,10,10,15,15-hexamethyl-10,15-dihydro-5H-diindeno[1,2-a:1'',2''-c]fluorene-2,7,12-tricarboxylic
+      acid', nick: hmtt, formula: C36H30O6, synthesis: '', analysis: '', mass: null,
+    category: null, functional_group: null, connections: null, chirality: null, base_ligand: null}
+- model: db.ligand
+  pk: 4
+  fields: {name: '2-guanidino-[1,1''-biphenyl]-4,4''-dicarboxylic acid', nick: bpdc-asy-gua,
+    formula: C15H13N3O4, synthesis: '', analysis: '', mass: 299.29, category: 2, functional_group: 5,
+    connections: 2, chirality: none, base_ligand: null}
+- model: db.ligand
+  pk: 5
+  fields: {name: '6-(piperazin-1-yl)-5H-dibenzo[d,f][1,3]diazepine-3,9-dicarboxylic
+      acid', nick: bpdc-gua-piperidine, formula: C19H18N4O4, synthesis: '', analysis: '',
+    mass: 366.38, category: 2, functional_group: 3, connections: 2, chirality: none,
+    base_ligand: null}
+- model: db.ligand
+  pk: 6
+  fields: {name: (R)-2-(4-isopropyl-2-oxooxazolidin-3-yl)terephthalic acid, nick: bdc-chi-modu-01,
+    formula: C14H15NO6, synthesis: '', analysis: '', mass: 293.28, category: 2, functional_group: null,
+    connections: 2, chirality: right, base_ligand: null}
+- model: db.ligand
+  pk: 7
+  fields: {name: (S)-2-(4-benzyl-2-oxooxazolidin-3-yl)terephthalic acid, nick: bdc-chi-modu-02,
+    formula: C18H15NO6, synthesis: '', analysis: '', mass: 341.32, category: 2, functional_group: null,
+    connections: 2, chirality: left, base_ligand: null}
+- model: db.ligand
+  pk: 8
+  fields: {name: '2-((1R,2R,5S)-2,6,6-trimethylbicyclo[3.1.1]heptan-3-yl)isoindoline-4,7-dicarboxylic
+      acid', nick: bdc-chi-moud-03, formula: C20H25NO4, synthesis: '', analysis: '',
+    mass: 343.42, category: 2, functional_group: null, connections: 2, chirality: right,
+    base_ligand: null}
+- model: db.mof
+  pk: 1
+  fields: {name: MUF-77-BPDC-gua, nick: '', formula: '', synthesis: '', analysis: '',
+    mass: null, topology: ''}
+- model: db.mof
+  pk: 2
+  fields: {name: MUF-77_bpdc-gua_bdc-chi-moud-01, nick: MUF-77-gua-02, formula: Zn4O(bpdc-gua)1/2(bdc-ch-modu-01)1/2(hmtt)3/4,
+    synthesis: '', analysis: '', mass: 1313.65, topology: ith-d}
+- model: db.mof
+  pk: 3
+  fields: {name: MUF-77_bpdc-gua_bdc-chi-moud-02, nick: MUF-77-gua-03, formula: Zn4O(bpdc-gua)1/2(bdc-ch-modu-02)1/2(hmtt)3/4,
+    synthesis: '', analysis: '', mass: 1336.67, topology: ''}
+- model: db.mof
+  pk: 4
+  fields: {name: MUF-77_bpdc-gua_bdc-chi-moud-03, nick: MUF-77-gua-03, formula: Zn4O(bpdc-gua)1/2(bdc-ch-modu-03)1/2(hmtt)3/4,
+    synthesis: '', analysis: '', mass: 1337.72, topology: ''}
+- model: db.mofligand
+  pk: 1
+  fields: {mof: 1, ligand: 1}
+- model: db.mofligand
+  pk: 2
+  fields: {mof: 1, ligand: 2}
+- model: db.mofligand
+  pk: 3
+  fields: {mof: 1, ligand: 3}
+- model: db.mofligand
+  pk: 4
+  fields: {mof: 2, ligand: 3}
+- model: db.mofligand
+  pk: 5
+  fields: {mof: 2, ligand: 2}
+- model: db.mofligand
+  pk: 6
+  fields: {mof: 2, ligand: 6}
+- model: db.mofligand
+  pk: 7
+  fields: {mof: 3, ligand: 3}
+- model: db.mofligand
+  pk: 8
+  fields: {mof: 3, ligand: 2}
+- model: db.mofligand
+  pk: 9
+  fields: {mof: 3, ligand: 7}
+- model: db.mofligand
+  pk: 10
+  fields: {mof: 4, ligand: 3}
+- model: db.mofligand
+  pk: 11
+  fields: {mof: 4, ligand: 2}
+- model: db.mofligand
+  pk: 12
+  fields: {mof: 4, ligand: 8}
+- model: db.reaction
+  pk: 1
+  fields: {name: Mannich-01, notes: This was created in a fixture.}
+- model: db.reactioncatalystligand
+  pk: 1
+  fields: {reaction_id: 1, component_id: 1,
+    rate_constant: 0.5, conversion: 0.1, ee: 0.3, de: 0.3, yield_field: 0.3, amount: 2.0,
+    notes: 'What?'}
+- model: db.reactioncatalystligand
+  pk: 2
+  fields: {reaction_id: 1, component_id: 2,
+    rate_constant: 0.5, conversion: 0.1, ee: 0.3, de: 0.3, yield_field: 0.5, amount: 2.0,
+    notes: 'What 2?'}
+- model: db.reactioncatalystligand
+  pk: 3
+  fields: {reaction_id: 1, component_id: 7,
+    rate_constant: null, conversion: null, ee: null, de: null, yield_field: null,
+    amount: null, notes: ''}
+- model: db.reactioncatalystmof
+  pk: 1
+  fields: {reaction_id: 1, component_id: 1,
+    rate_constant: 0.3, conversion: 0.2, ee: 0.4, de: 0.4, yield_field: 0.3, amount: 1.0,
+    notes: ''}
+- model: db.reactioncatalystmof
+  pk: 2
+  fields: {reaction_id: 1, component_id: 2,
+    rate_constant: null, conversion: null, ee: null, de: null, yield_field: null,
+    amount: null, notes: ''}
+- model: db.reactionproduct
+  pk: 1
+  fields: {reaction_id: 1, component_id: 2}
+- model: db.reactionreactant
+  pk: 1
+  fields: {reaction: 1, component_id: 1}
