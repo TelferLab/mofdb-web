@@ -293,15 +293,15 @@ function display_datatable_reaction_list(){
 function ajax_reload_all_tables(row){
     var origin = window.location.origin;
     // Catalysts
-    var catalysts_url = origin + '/reaction-catalysts-table/1/';
+    var catalysts_url = origin + '/reaction-catalysts-table/' + row.data().id;
     var catalysts_table = datatable_reaction_catalysts_short(row.data().id, catalysts_url);
     catalysts_table.ajax.reload();
     // Reactants
-    var reactants_url = origin + '/reaction-reactants-table/1/';
+    var reactants_url = origin + '/reaction-reactants-table/' + row.data().id;
     var reactants_table = datatable_reaction_reactants(row.data().id, reactants_url);
     reactants_table.ajax.reload();
     // Product
-    var products_url = origin + '/reaction-products-table/1/';
+    var products_url = origin + '/reaction-products-table/' + row.data().id;
     var products_table = datatable_reaction_products(row.data().id, products_url);
     products_table.ajax.reload();
 }
