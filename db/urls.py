@@ -25,10 +25,9 @@ urlpatterns = [
 from django.conf import settings
 from django.views.static import serve
 if settings.DEBUG:
-    import debug_toolbar
     urlpatterns += [
         url(r'^databasefiles/(?P<path>.*)$', serve, {
             'document_root': settings.MEDIA_ROOT,
         }),
-        url(r'^__debug__/', include(debug_toolbar.urls)),
+        # url(r'^__debug__/', include(debug_toolbar.urls)),
     ]

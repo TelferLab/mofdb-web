@@ -46,15 +46,15 @@ INSTALLED_APPS = [
     # greater consistency between gunicorn and `./manage.py runserver`. See:
     # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
     'whitenoise.runserver_nostatic',
-    'livereload',
+    # 'livereload',
     'django.contrib.staticfiles',
     'django_extensions',  # https://github.com/django-extensions/django-extensions
     'storages',           # django-storages: https://github.com/jschneier/django-storages
     'django_cleanup',     # https://github.com/un1t/django-cleanup
-    'django_tables2',     # https://github.com/bradleyayers/django-tables2
+    # 'django_tables2',     # https://github.com/bradleyayers/django-tables2
                           # 'nested_admin',       # https://github.com/theatlantic/django-nested-admin
     'rest_framework',
-    'debug_toolbar'      # django-debug-toolbar
+    # 'debug_toolbar'      # django-debug-toolbar
 ]
 
 MIDDLEWARE = [
@@ -66,12 +66,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'livereload.middleware.LiveReloadScript',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'livereload.middleware.LiveReloadScript',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 # Needed for DebugToolBar (only used in local dev)
-INTERNAL_IPS = ['127.0.0.1', ]
+# INTERNAL_IPS = ['127.0.0.1', ]
 
 ROOT_URLCONF = 'mofdb.urls'
 

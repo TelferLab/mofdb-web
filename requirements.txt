@@ -9,10 +9,10 @@ django_extensions==1.9.0
 django-storages==1.6.5
 django-cleanup==1.0.1
 django-livereload-server==0.2.3
-django_tables2==1.10.0
+# django_tables2==1.10.0
 django-grappelli==2.10.1
 djangorestframework==3.6.4
 # django-autocomplete-light==3.2.10
 # django-nested-admin==3.0.20
 -e git+https://github.com/CrossWaterBridge/django-grappelli-autocomplete-fk-edit-link.git@master#egg=django-grappelli-autocomplete-fk-edit-link
-django-debug-toolbar>=1.8
+# django-debug-toolbar>=1.8
