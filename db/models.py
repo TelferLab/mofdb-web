@@ -39,6 +39,9 @@ class LigandCategory(models.Model):
     def get_absolute_url(self):
         return reverse('ligandcategory.views.details', args=[str(self.id)])
 
+    def get_admin_url(self):
+        return reverse("admin:%s_%s_change" % (self._meta.app_label, self._meta.model_name), args=(self.id,))
+
     class Meta:
         verbose_name = "LigandCategory"
         verbose_name_plural = "LigandCategories"
@@ -53,6 +56,9 @@ class ReactionCategory(models.Model):
 
     def get_absolute_url(self):
         return reverse('reactioncategory.views.details', args=[str(self.id)])
+
+    def get_admin_url(self):
+        return reverse("admin:%s_%s_change" % (self._meta.app_label, self._meta.model_name), args=(self.id,))
 
     class Meta:
         verbose_name = "ReactionCategory"
@@ -69,6 +75,9 @@ class DataType(models.Model):
     def get_absolute_url(self):
         return reverse('datatype.views.details', args=[str(self.id)])
 
+    def get_admin_url(self):
+        return reverse("admin:%s_%s_change" % (self._meta.app_label, self._meta.model_name), args=(self.id,))
+
     class Meta:
         db_table = 'DataType'
 
@@ -82,6 +91,9 @@ class FunctionalGroup(models.Model):
 
     def get_absolute_url(self):
         return reverse('functionalgroup.views.details', args=[str(self.id)])
+
+    def get_admin_url(self):
+        return reverse("admin:%s_%s_change" % (self._meta.app_label, self._meta.model_name), args=(self.id,))
 
     class Meta:
         db_table = 'FunctionalGroup'
@@ -110,6 +122,9 @@ class ChemicalCompound(models.Model):
     def get_absolute_url(self):
         return reverse('chemicalcompound.views.details', args=[str(self.id)])
 
+    def get_admin_url(self):
+        return reverse("admin:%s_%s_change" % (self._meta.app_label, self._meta.model_name), args=(self.id,))
+
     class Meta:
         db_table = 'ChemicalCompound'
 
@@ -123,6 +138,9 @@ class BaseLigand(models.Model):
 
     def get_absolute_url(self):
         return reverse('baseligand.views.details', args=[str(self.id)])
+
+    def get_admin_url(self):
+        return reverse("admin:%s_%s_change" % (self._meta.app_label, self._meta.model_name), args=(self.id,))
 
     class Meta:
         db_table = 'BaseLigand'
@@ -165,6 +183,9 @@ class Ligand(models.Model):
     def get_absolute_url(self):
         return reverse('ligand.views.details', args=[str(self.id)])
 
+    def get_admin_url(self):
+        return reverse("admin:%s_%s_change" % (self._meta.app_label, self._meta.model_name), args=(self.id,))
+
     @property
     def category_name(self):
         return self.category.__str__
@@ -204,6 +225,9 @@ class Mof(models.Model):
 
     def get_absolute_url(self):
         return reverse('mof.views.details', args=[str(self.id)])
+
+    def get_admin_url(self):
+        return reverse("admin:%s_%s_change" % (self._meta.app_label, self._meta.model_name), args=(self.id,))
 
     @property
     def all_ligands(self):
@@ -281,6 +305,9 @@ class Reaction(models.Model):
 
     def get_absolute_url(self):
         return reverse('reaction.views.details', args=[str(self.id)])
+
+    def get_admin_url(self):
+        return reverse("admin:%s_%s_change" % (self._meta.app_label, self._meta.model_name), args=(self.id,))
 
     @property
     def all_catalysts_cc(self):

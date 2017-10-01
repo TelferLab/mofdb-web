@@ -32,6 +32,20 @@ function datatable_reaction_catalysts(id, url){
                 "data": "component_url",
                 "visible": false
             }
+        ],
+        "columnDefs": [
+            {
+                "targets":  1,
+                "render": function (data, type, row) {
+                    return '<a href="'+row.component_url+'">'+data+'</a>';
+                }
+            },
+            {
+                "targets":  2,
+                "render": function (data, type, row) {
+                    return '<a href="'+row.component_url+'">'+data+'</a>';
+                }
+            }
         ]
     } );
     return table;
@@ -112,6 +126,20 @@ function datatable_reaction_reactants(id, url){
                 "data": "component_url",
                 "visible": false
             }
+        ],
+        "columnDefs": [
+            {
+                "targets":  0,
+                "render": function (data, type, row) {
+                    return '<a href="'+row.component_url+'">'+data+'</a>';
+                }
+            },
+            {
+                "targets":  1,
+                "render": function (data, type, row) {
+                    return '<a href="'+row.component_url+'">'+data+'</a>';
+                }
+            }
         ]
     } );
     return table;
@@ -150,12 +178,18 @@ function datatable_reaction_products(id, url){
         ],
         "columnDefs": [
             {
+                "targets":  0,
+                "render": function (data, type, row) {
+                    return '<a href="'+row.component_url+'">'+data+'</a>';
+                }
+            },
+            {
                 "targets":  1,
                 "render": function (data, type, row) {
                     return '<a href="'+row.component_url+'">'+data+'</a>';
                 }
             }
-        ],
+        ]
     } );
     return table;
 }
