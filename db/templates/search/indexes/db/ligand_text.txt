@@ -1,0 +1,7 @@
+{{ object.name }}
+{{ object.nick }}
+{{ object.formula }}
+{{ object.synthesis }}
+{{ object.analysis }}
+{{ object.category.name }}
+{{ object.functional_group.name }}

@@ -6,6 +6,7 @@ from db.views import LigandListView, LigandDetailView
 from db.views import MofListView, MofDetailView
 
 urlpatterns = [
+    url(r'^search/', include('haystack.urls')),
     url(r'^$', views.index, name='index'),
     url(r'^index', views.index, name='index'),
     url(r'^reactions/([\w-]+)/$', ReactionListView.as_view(), name='reaction.views.list'),

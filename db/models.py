@@ -116,6 +116,9 @@ class ChemicalCompound(models.Model):
         blank=True, null=True)
     chirality = EnumField(Chirality, max_length=5, blank=True, null=True)
 
+    date_last_modified = models.DateTimeField(auto_now=True)
+    date_creation = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return self.name
 
@@ -177,6 +180,9 @@ class Ligand(models.Model):
         related_name='ligands',
         blank=True, null=True)
 
+    date_last_modified = models.DateTimeField(auto_now=True)
+    date_creation = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return self.name
 
@@ -219,6 +225,9 @@ class Mof(models.Model):
         through_fields=('mof', 'ligand'),
         related_name='mofs'
     )
+
+    date_last_modified = models.DateTimeField(auto_now=True)
+    date_creation = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
@@ -299,6 +308,9 @@ class Reaction(models.Model):
         related_name='reaction_products',
         blank=True,
     )
+
+    date_last_modified = models.DateTimeField(auto_now=True)
+    date_creation = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name

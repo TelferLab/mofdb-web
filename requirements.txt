@@ -12,6 +12,10 @@ django-livereload-server==0.2.3
 # django_tables2==1.10.0
 django-grappelli==2.10.1
 djangorestframework==3.6.4
+# elasticsearch-dsl==5.3
+django-haystack==2.6.1
+# Elasticsearch 2.x
+elasticsearch>=2.0.0,<3.0.0
 # django-autocomplete-light==3.2.10
 # django-nested-admin==3.0.20
 -e git+https://github.com/CrossWaterBridge/django-grappelli-autocomplete-fk-edit-link.git@master#egg=django-grappelli-autocomplete-fk-edit-link

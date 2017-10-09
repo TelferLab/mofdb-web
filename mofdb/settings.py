@@ -54,8 +54,17 @@ INSTALLED_APPS = [
     # 'django_tables2',     # https://github.com/bradleyayers/django-tables2
                           # 'nested_admin',       # https://github.com/theatlantic/django-nested-admin
     'rest_framework',
+    'haystack',
     # 'debug_toolbar'      # django-debug-toolbar
 ]
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'haystack',
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

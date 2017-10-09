@@ -1,0 +1,8 @@
+{{ object.name }}
+{{ object.notes }}
+{{ object.category.name }}
+{{ object.all_catalysts_cc }}
+{{ object.all_catalysts_ligand }}
+{{ object.all_catalysts_mof }}
+{{ object.all_reactants }}
+{{ object.all_products }}
