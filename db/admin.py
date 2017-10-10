@@ -72,6 +72,10 @@ class ReactionCatalystCCInline(admin.TabularInline):
     extra = 1
     verbose_name = "Catalyst: Chemical Compound"
     verbose_name_plural = "Catalysts: Chemical Compounds"
+    raw_id_fields = ('component', )
+    autocomplete_lookup_fields = {
+        'fk': ['component', ]
+    }
 
 
 class ReactionCatalystLigandInline(admin.TabularInline):
@@ -154,44 +158,6 @@ class ReactionAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
         return str(obj)
 
     change_form_template = 'db/admin/reaction/change_form.html'
-
-    # Change view to add table information
-    # def change_view(self, request, object_id, form_url='', extra_context=None):
-    #     extra_context = extra_context or {}
-    #     # Queries
-    #     q_cc = ReactionCatalystCC.objects.filter(reaction=object_id)
-    #     q_ligand = ReactionCatalystLigand.objects.filter(reaction=object_id)
-    #     q_mof = ReactionCatalystMof.objects.filter(reaction=object_id)
-    #     q_reactant = ReactionReactant.objects.filter(reaction=object_id)
-    #     q_product = ReactionProduct.objects.filter(reaction=object_id)
-    #     # Serialize (they are [OrderedDict[(),], OrderedDict ])
-    #     s_cc = ReactionCatalystCCSerializer(q_cc, many=True, context={'request': request})
-    #     s_ligand = ReactionCatalystLigandSerializer(q_ligand, many=True, context={'request': request})
-    #     s_mof = ReactionCatalystMofSerializer(q_mof, many=True, context={'request': request})
-    #     s_reactant = ReactionReactantSerializer(q_reactant, many=True, context={'request': request})
-    #     s_product = ReactionProductSerializer(q_product, many=True, context={'request': request})
-    #
-    #     data_reactants = s_reactant.data
-    #     data_products = s_product.data
-    #     data_catalysts = s_cc.data + s_ligand.data + s_mof.data
-    #
-    #     # Create table from serialized data
-    #     # Ligand Table:
-    #     # table = ReactionCatalystLigandTable(q_ligand)
-    #     # extra_context['table'] = table
-    #     # Generic Table:
-    #     table_catalysts = CatalystsTable(data_catalysts)
-    #     extra_context['table_catalysts'] = table_catalysts
-    #     table_reactants = ReactantsTable(data_reactants)
-    #     extra_context['table_reactants'] = table_reactants
-    #     table_products = ProductsTable(data_products)
-    #     extra_context['table_products'] = table_products
-    #     return super().change_view(
-    #         request, object_id, form_url, extra_context=extra_context,
-    #     )
-
-# }}}
-
 
 # ChemicalCompound {{{
 class VisualizationCCInline(admin.TabularInline):
