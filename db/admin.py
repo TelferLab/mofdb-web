@@ -166,7 +166,7 @@ class VisualizationCCInline(admin.TabularInline):
 
 
 @admin.register(ChemicalCompound)
-class ChemicalCompoundAdmin(admin.ModelAdmin):
+class ChemicalCompoundAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
     search_fields = ('name',
                      'nick',
                      'formula',
@@ -202,7 +202,7 @@ class BaseLigandAdmin(admin.ModelAdmin):
 #         return {}
 
 @admin.register(Ligand)
-class LigandAdmin(admin.ModelAdmin):
+class LigandAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
     search_fields = ('name',
                      'nick',
                      'formula',
@@ -235,6 +235,10 @@ class LigandAdmin(admin.ModelAdmin):
 class MofLigandInline(admin.TabularInline):
     model = Mof.ligands.through
     extra = 1
+    raw_id_fields = ('ligand',)
+    autocomplete_lookup_fields = {
+        'fk': ['ligand']
+    }
 
 
 class VisualizationMofInline(admin.TabularInline):
@@ -243,7 +247,7 @@ class VisualizationMofInline(admin.TabularInline):
 
 
 @admin.register(Mof)
-class MofAdmin(admin.ModelAdmin):
+class MofAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
     search_fields = ('name',
                      'nick',
                      'formula',
