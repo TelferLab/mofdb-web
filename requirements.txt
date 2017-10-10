@@ -16,6 +16,8 @@ djangorestframework==3.6.4
 django-haystack==2.6.1
 # Elasticsearch 2.x
 elasticsearch>=2.0.0,<3.0.0
+# Bonsai/Heroku requirement
+certifi>=0.0.8
 # django-autocomplete-light==3.2.10
 # django-nested-admin==3.0.20
 -e git+https://github.com/CrossWaterBridge/django-grappelli-autocomplete-fk-edit-link.git@master#egg=django-grappelli-autocomplete-fk-edit-link
