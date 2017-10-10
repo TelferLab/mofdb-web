@@ -1,0 +1,21 @@
+{% extends "db/base_site.html" %}
+
+{% block title %} Logged out {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <!-- Animate.css -->
+  <link href="/static/vendors/animate.css/animate.min.css" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block body_class %}login{% endblock body_class %}
+
+{% block body %}
+  <div class="login_wrapper">
+      <section class="login_content">
+        <h2>Logged out!</h2>
+        <a href="{% url 'login'%}">Click here to login again.</a>
+      </section>
+  </div>
+{% endblock body %}
+

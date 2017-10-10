@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^search/', include('haystack.urls')),
     url(r'^$', views.index, name='index'),
     url(r'^index', views.index, name='index'),
+    url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^reactions/([\w-]+)/$', ReactionListView.as_view(), name='reaction.views.list'),
     url(r'^reaction/(?P<pk>[0-9]+)/$', ReactionDetailView.as_view(), name='reaction.views.details'),
     url(r'^chemicalcompounds/([\w-]+)/$', ChemicalCompoundListView.as_view(), name='chemicalcompound.views.list'),
