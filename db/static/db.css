@@ -66,3 +66,11 @@ tr.shown td.details-control::before {
 /* .category h2 { */
 /*     display: inline */
 /* } */
+
+.search-box .input-group {
+    position: relative;
+    margin-top: 12px;
+}
+.search-box .input-group :focus {
+    background-color: whitesmoke;
+}
