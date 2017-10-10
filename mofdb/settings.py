@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import distutils
 import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -20,15 +21,18 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '2t9+nz848gek0a4y54ts#)4q_%e7l!y2v*!!c_!cif1p6%=ws2'
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG_string = os.environ.get('DEBUG') or 'True'
+DEBUG = bool(distutils.util.strtobool(DEBUG_string))
+
+# SECURITY WARNING: keep the secret key used in production secret!
+if DEBUG:
+    SECRET_KEY = '2t9+nz848gek0a4y54ts#)4q_%e7l!y2v*!!c_!cif1p6%=ws2'
+else:
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+
 
 # ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
