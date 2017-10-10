@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-import distutils
+from distutils.util import strtobool
 import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -23,7 +23,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG_string = os.environ.get('DEBUG') or 'True'
-DEBUG = bool(distutils.util.strtobool(DEBUG_string))
+DEBUG = bool(strtobool(DEBUG_string))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 if DEBUG:
