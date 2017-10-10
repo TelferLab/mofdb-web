@@ -42,17 +42,19 @@
             </div>
             <div>
               <input class="btn btn-default submit" type="submit" value="Log in" />
-              <a class="reset_pass" href="{% url 'password_reset' %}">Lost your password?</a>
+              {# Enable this for lost your password. Needs email support. #}
+              {# <a class="reset_pass" href="{% url 'password_reset' %}">Lost your password?</a> #}
             </div>
 
             <div class="clearfix"></div>
 
-            <div class="separator">
-              <p class="change_link">New to site?
-                <a href="#signup" class="to_register"> Create Account </a>
-              </p>
-
-              <div class="clearfix"></div>
+            {# Enable this for create account view #}
+            {# <div class="separator"> #}
+            {#   <p class="change_link">New to site? #}
+            {#     <a href="#signup" class="to_register"> Create Account </a> #}
+            {#   </p> #}
+            {#  #}
+            {#   <div class="clearfix"></div> #}
               <br />
 
               <div>
