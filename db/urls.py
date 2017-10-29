@@ -29,6 +29,8 @@ urlpatterns = [
     url(r'^mofs-table/([\w-]+)/$', views.MofListViewJSON.as_view(), name='mof.views.table'),
 # Ligand #
     url(r'^ligands-table/([\w-]+)/$', views.LigandListViewJSON.as_view(), name='ligand.views.table'),
+# ChemicalCompound #
+    url(r'^chemicalcompounds-table/([\w-]+)/$', views.ChemicalCompoundListViewJSON.as_view(), name='chemicalcompound.views.table'),
 ]
 
 from django.conf import settings

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from db.models import Chirality
+from db.models import ChemicalCompound
 from db.models import Ligand
 from db.models import (Mof, MofLigand)
 from db.models import (Reaction,
@@ -30,6 +31,15 @@ class EnumField(serializers.ChoiceField):
             return self.enum_class[data]
         except KeyError:
             self.fail('invalid_choice', input=data)
+
+######## CHEMICALCOMPOUND ######
+class ChemicalCompoundSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='chemicalcompound.views.details', format='html')
+    chirality = EnumField(enum_class=Chirality)
+
+    class Meta:
+        model = ChemicalCompound
+        fields = '__all__'
 
 ######## LIGAND ######
 class LigandSerializer(serializers.ModelSerializer):

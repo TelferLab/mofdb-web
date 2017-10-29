@@ -1,0 +1,59 @@
+{% extends "db/base_site.html" %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link href="{% static 'db.css' %}" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+  <div class="right_col" role="main">
+
+    <div class="name ">
+      <p><h2>Name: {{ object.name }}</h2></p>
+    </div>
+    <div class="field_sep"></div>
+    <div class="nick">
+      <p><h2>Nick: {{ object.nick }}</h2> </p>
+    </div>
+    <div class="field_sep"></div>
+    <div class="formula">
+      <p><h2>Formula: {{ object.formula }}</h2> </p>
+    </div>
+    <div class="field_sep"></div>
+    <div class="synthesis">
+      <p>
+      <span class="title"><h2>Synthesis:</h2></span>
+      <span> {{ object.synthesis|linebreaks|escape }}</span>
+      </p>
+    </div>
+    <div class="field_sep"></div>
+    <div class="analysis">
+      <p>
+      <span class="title"><h2>Analysis:</h2></span>
+      <span> {{ object.analysis|linebreaks|escape }}</span>
+      </p>
+    </div>
+    <div class="field_sep"></div>
+    <div class="mass">
+      <p><h2>Mass: {{ object.mass }}</h2> </p>
+    </div>
+    <div class="field_sep"></div>
+    <div class="functional_group">
+      <p><h2>Functional Group: {{ object.functional_group }}</h2> </p>
+    </div>
+    <div class="field_sep"></div>
+    <div class="chirality">
+      <p><h2>Chirality: {{ object.chirality }}</h2> </p>
+    </div>
+    <div class="field_sep"></div>
+{% endblock content %}
+
+{# {% block javascripts %} #}
+{#   {{ block.super }} #}
+{#   <!-- Custom --> #}
+{#   <script src="{% static 'build/js/mof_mofdb.js' %}"></script> #}
+{#   <script charset="utf-8" type="text/javascript"> #}
+{# display_datatable_mof_ligands({{ object.id }}, "{% url 'mof.views.ligandstable' object.id %}") #}
+{#   </script> #}
+{# {% endblock javascripts %} #}
+<!-- vim: set ft=htmldjango: -->

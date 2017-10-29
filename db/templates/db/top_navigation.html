@@ -3,21 +3,6 @@
     <div class="nav toggle">
       <a id="menu_toggle"><i class="fa fa-bars"></i></a>
     </div>
-    {% if user.is_authenticated %}
-      <div class="nav navbar-form search-box">
-        <form method="get" action="/search/?q=" id=search-box-form>
-          {% csrf_token %}
-          <div class="input-group">
-            <input type="text" name="q" class="form-control" placeholder="Search all MOFdb">
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="submit">
-                <i class="fa fa-search"></i>
-              </button>
-            </span>
-          </div>
-        </form>
-      </div>
-    {% endif %}
     <ul class="nav navbar-nav navbar-right">
       <li class="">
         <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -77,6 +62,21 @@
       {#   </a> #}
       {# </li> #}
       {# {% endif %} #}
+      {% if user.is_authenticated %}
+      <div class="nav navbar-form search-box">
+        <form method="get" action="/search/?q=" id=search-box-form>
+          {% csrf_token %}
+          <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Search all MOFdb">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="submit">
+                <i class="fa fa-search"></i>
+              </button>
+            </span>
+          </div>
+        </form>
+      </div>
+      {% endif %}
     </ul>
   </nav>
 </div>

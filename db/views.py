@@ -4,6 +4,7 @@ from db.models import Reaction
 from db.models import ChemicalCompound
 from db.models import Ligand
 from db.models import Mof
+from db.serializers import ChemicalCompoundSerializer
 from db.serializers import LigandSerializer
 from db.serializers import (MofSerializer,
                             MofLigandSerializer)
@@ -17,6 +18,16 @@ from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse, JsonResponse
 import json
 # Create your views here.
+############## CHEMICALCOMPOUNDS #################
+class ChemicalCompoundListViewJSON(ListView):
+    model = ChemicalCompound
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        # Serialize ChemicalCompounds
+        serializer = ChemicalCompoundSerializer(queryset,
+                                        many=True, context={'request': request})
+        return HttpResponse(json.dumps(serializer.data), content_type='application/json')
+
 ############## LIGANDS #################
 class LigandListViewJSON(ListView):
     model = Ligand
