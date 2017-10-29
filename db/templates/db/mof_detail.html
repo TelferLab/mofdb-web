@@ -60,7 +60,7 @@
 {% block javascripts %}
   {{ block.super }}
   <!-- Custom -->
-  <script src="{% static 'build/js/components_mofdb.js' %}"></script>
+  <script src="{% static 'build/js/mof_mofdb.js' %}"></script>
   <script charset="utf-8" type="text/javascript">
 display_datatable_mof_ligands({{ object.id }}, "{% url 'mof.views.ligandstable' object.id %}")
   </script>
