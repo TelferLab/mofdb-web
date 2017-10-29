@@ -69,8 +69,8 @@ ES_URL = urlparse(os.environ.get('BONSAI_URL') or 'http://127.0.0.1:9200/')
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch2_backend.Elasticsearch2SearchEngine',
-        # 'URL': ES_URL.scheme + '://' + ES_URL.hostname + ':443',
-        'URL': ES_URL.scheme + '://' + ES_URL.hostname + ':9200',
+        'URL': ES_URL.scheme + '://' + ES_URL.hostname + ':443',
+        # 'URL': ES_URL.scheme + '://' + ES_URL.hostname + ':80',
         'INDEX_NAME': 'haystack',
     },
 }
