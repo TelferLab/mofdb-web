@@ -4,6 +4,7 @@ from db.models import Reaction
 from db.models import ChemicalCompound
 from db.models import Ligand
 from db.models import Mof
+from db.serializers import LigandSerializer
 from db.serializers import (MofSerializer,
                             MofLigandSerializer)
 from db.serializers import (ReactionSerializer,

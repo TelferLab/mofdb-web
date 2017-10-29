@@ -27,6 +27,8 @@ urlpatterns = [
 # Mof #
     url(r'^mof-ligands-table/(?P<pk>[0-9]+)/$', views.mof_ligands_JSON, name='mof.views.ligandstable'),
     url(r'^mofs-table/([\w-]+)/$', views.MofListViewJSON.as_view(), name='mof.views.table'),
+# Ligand #
+    url(r'^ligands-table/([\w-]+)/$', views.LigandListViewJSON.as_view(), name='ligand.views.table'),
 ]
 
 from django.conf import settings

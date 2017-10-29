@@ -12,7 +12,7 @@ function display_datatable_ligand_list(){
                 "dataSrc": ""
             },
             "fixedHeader": true,
-            // "responsive": true,
+            "responsive": true,
             // "paging": false,
             // "pagingType": "numbers",
             // "lengthChange": false,
@@ -28,6 +28,7 @@ function display_datatable_ligand_list(){
                 { "data": "id" },
                 { "data": "name" },
                 { "data": "nick" },
+                { "data": "category" },
                 {
                     "data": "url",
                     "visible": false
@@ -50,5 +51,25 @@ function display_datatable_ligand_list(){
             "ordering": true,
             "order": [[1, 'asc']]
         } );
+
+        // // Add event listener for opening and closing details
+        // $('#table-ligand-list tbody').on('click', 'td.details-control', function () {
+        //     var tr = $(this).closest('tr');
+        //     var row = table.row( tr );
+        //
+        //     if ( row.child.isShown() ) {
+        //         // This row is already open - close it
+        //         row.child.hide();
+        //         tr.removeClass('shown');
+        //     }
+        //     else {
+        //         // Open this row
+        //         // row.child( mof_format_extra(row.data()) ).show();
+        //         // row.child( mof_format_table_all(row.data()) ).show();
+        //         tr.addClass('shown');
+        //         // ajax_reload_tables(row);
+        //     }
+        //
+        // } );
     } );
 }

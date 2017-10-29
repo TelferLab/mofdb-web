@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from db.models import Chirality
 from db.models import Ligand
 from db.models import (Mof, MofLigand)
 from db.models import (Reaction,
@@ -7,14 +8,41 @@ from db.models import (Reaction,
                        ReactionCatalystMof,
                        ReactionProduct,
                        ReactionReactant)
+# return __str__ value instead of pk.
+class StrPrimaryKeyRelatedField(serializers.PrimaryKeyRelatedField):
+
+    def to_representation(self, obj):
+        return obj.name
+
+# From: https://github.com/hzdg/django-enumfields/issues/30
+# EnumFields are not JSON serializable without this. Used in Ligand
+class EnumField(serializers.ChoiceField):
+    def __init__(self, enum_class, **kwargs):
+        self.enum_class = enum_class
+        kwargs['choices'] = [(e.name, e.name) for e in enum_class]
+        super(EnumField, self).__init__(**kwargs)
+
+    def to_representation(self, obj):
+        return obj.name
+
+    def to_internal_value(self, data):
+        try:
+            return self.enum_class[data]
+        except KeyError:
+            self.fail('invalid_choice', input=data)
 
 ######## LIGAND ######
 class LigandSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='ligand.views.details', format='html')
+    chirality = EnumField(enum_class=Chirality)
+    category = serializers.CharField(source='category_name', read_only=True)
+    # category = StrPrimaryKeyRelatedField(queryset=Category)
 
     class Meta:
         model = Ligand
-        fields = '__all__'
+        # fields = '__all__'
+        exclude=('category',)
+
 
 ######## MOF ######
 class MofLigandSerializer(serializers.ModelSerializer):
