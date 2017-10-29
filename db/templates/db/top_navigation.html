@@ -25,6 +25,14 @@
           <li><a href="{% url 'login'%}"><i class="fa fa-sign-in"></i> Log In</a></li>
           {% endif %}
         </ul>
+        {% if user.is_staff %}
+        <li class="admin-edit-link" style="display: none;">
+          <a href="javascript:;" aria-expanded="false">
+            <i class="fa fa-pencil-square-o"></i>
+            <span>Admin-Edit</span>
+          </a>
+        </li>
+        {% endif %}
       </li>
       {# <li role="presentation" class="dropdown"> #}
       {#   <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false"> #}
@@ -54,14 +62,6 @@
       {#     </li> #}
       {#   </ul> #}
       {# </li> #}
-      {# {% if user.is_staff %} #}
-      {# <li class="admin-edit-link"> #}
-      {#   <a href="javascript:;" aria-expanded="false"> #}
-      {#     <i class="fa fa-pencil-square-o"></i> #}
-      {#     <span>Edit</span> #}
-      {#   </a> #}
-      {# </li> #}
-      {# {% endif %} #}
       {% if user.is_authenticated %}
       <div class="nav navbar-form search-box">
         <form method="get" action="/search/?q=" id=search-box-form>

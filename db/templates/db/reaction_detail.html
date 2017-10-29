@@ -80,6 +80,7 @@
 display_datatable_reaction_catalysts({{ object.id }}, "{% url 'reaction.views.catalyststable' object.id %}")
 display_datatable_reaction_reactants({{ object.id }}, "{% url 'reaction.views.reactantstable' object.id %}")
 display_datatable_reaction_products({{ object.id }}, "{% url 'reaction.views.productstable' object.id %}")
+populate_admin_link("{% url 'admin:db_reaction_change' object.id %}")
   </script>
 {% endblock javascripts %}
 <!-- vim: set ft=htmldjango: -->

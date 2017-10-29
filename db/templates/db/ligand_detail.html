@@ -60,12 +60,11 @@
     <div class="field_sep"></div>
 {% endblock content %}
 
-{# {% block javascripts %} #}
-{#   {{ block.super }} #}
-{#   <!-- Custom --> #}
-{#   <script src="{% static 'build/js/mof_mofdb.js' %}"></script> #}
-{#   <script charset="utf-8" type="text/javascript"> #}
-{# display_datatable_mof_ligands({{ object.id }}, "{% url 'mof.views.ligandstable' object.id %}") #}
-{#   </script> #}
-{# {% endblock javascripts %} #}
+{% block javascripts %}
+  {{ block.super }}
+  <!-- Custom -->
+  <script charset="utf-8" type="text/javascript">
+populate_admin_link("{% url 'admin:db_ligand_change' object.id %}")
+  </script>
+{% endblock javascripts %}
 <!-- vim: set ft=htmldjango: -->

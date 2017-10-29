@@ -5082,7 +5082,6 @@ function init_echarts() {
 
 }
 
-
 $(document).ready(function() {
 
     init_sparklines();
@@ -5119,5 +5118,12 @@ $(document).ready(function() {
     init_CustomNotification();
     init_autosize();
     init_autocomplete();
-
 });
+
+function populate_admin_link(obj_admin_url){
+    // var origin = window.location.origin;
+    var edit = $(".admin-edit-link a");
+    edit.prop("href", obj_admin_url);
+    $(".admin-edit-link").css("display", "inline-block");
+    // edit.show();
+}
