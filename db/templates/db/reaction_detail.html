@@ -1,11 +1,5 @@
 {% extends "db/base_table_site.html" %}
 
-{% block stylesheets %}
-  {{ block.super }}
-  <!-- Custom -->
-  <link href="/static/db.css" rel="stylesheet">
-{% endblock stylesheets %}
-
 {% block content %}
   <div class="right_col" role="main">
 
@@ -81,7 +75,7 @@
 {% block javascripts %}
   {{ block.super }}
   <!-- Custom -->
-  <script src="/static/build/js/mofdb.js"></script>
+  <script src="{% static 'build/js/reaction_mofdb.js' %}"></script>
   <script charset="utf-8" type="text/javascript">
 display_datatable_reaction_catalysts({{ object.id }}, "{% url 'reaction.views.catalyststable' object.id %}")
 display_datatable_reaction_reactants({{ object.id }}, "{% url 'reaction.views.reactantstable' object.id %}")

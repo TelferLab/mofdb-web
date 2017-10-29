@@ -1,0 +1,68 @@
+{% extends "db/base_table_site.html" %}
+
+{% block content %}
+  <div class="right_col" role="main">
+
+    <div class="name ">
+      <p><h2>Name: {{ object.name }}</h2></p>
+    </div>
+    <div class="field_sep"></div>
+    <div class="nick">
+      <p><h2>Nick: {{ object.nick }}</h2> </p>
+    </div>
+    <div class="field_sep"></div>
+    <div class="formula">
+      <p><h2>Formula: {{ object.formula }}</h2> </p>
+    </div>
+    <div class="field_sep"></div>
+    <div class="container ligands">
+      <h2>Ligands:</h2>
+      <table id="{{ object.id }}" class="table-mof-ligands table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            {# <th>id</th> #}
+            <th>Name</th>
+            <th>Nick</th>
+            <th>url</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="field_sep"></div>
+    <div class="synthesis">
+      <p>
+      <span class="title"><h2>Synthesis:</h2></span>
+      <span> {{ object.synthesis|linebreaks|escape }}</span>
+      </p>
+    </div>
+    <div class="field_sep"></div>
+    <div class="analysis">
+      <p>
+      <span class="title"><h2>Analysis:</h2></span>
+      <span> {{ object.analysis|linebreaks|escape }}</span>
+      </p>
+    </div>
+    <div class="field_sep"></div>
+    <div class="mass">
+      <p><h2>Mass: {{ object.mass }}</h2> </p>
+    </div>
+    <div class="field_sep"></div>
+    <div class="topology">
+      <p><h2>Topology: {{ object.topology }}</h2> </p>
+    </div>
+    <div class="field_sep"></div>
+{# <script charset="utf-8"> #}
+{# var data_catalysts= {{ data_catalysts|escapejs }} #}
+{# </script> #}
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <!-- Custom -->
+  <script src="{% static 'build/js/components_mofdb.js' %}"></script>
+  <script charset="utf-8" type="text/javascript">
+display_datatable_mof_ligands({{ object.id }}, "{% url 'mof.views.ligandstable' object.id %}")
+  </script>
+{% endblock javascripts %}
+<!-- vim: set ft=htmldjango: -->

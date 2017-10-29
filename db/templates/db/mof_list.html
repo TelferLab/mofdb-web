@@ -2,15 +2,15 @@
 
 {% block content %}
   <div class="right_col" role="main">
-    <h1>Reactions</h1>
-    <div class="container reaction-list-table">
-      <table id="table-reaction-list" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
+    <h1>Mofs</h1>
+    <div class="container mof-list-table">
+      <table id="table-mof-list" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
         <thead>
           <tr>
             <th></th>
             <th>id</th>
             <th>Name</th>
-            <th>Category</th>
+            <th>Nick</th>
             <th>url</th>
           </tr>
         </thead>
@@ -22,9 +22,9 @@
 {% block javascripts %}
   {{ block.super }}
   <!-- Custom -->
-  <script src="{% static 'build/js/reaction_mofdb.js' %}"></script>
+  <script src="{% static 'build/js/components_mofdb.js' %}"></script>
   <script charset="utf-8" type="text/javascript">
-display_datatable_reaction_list()
+display_datatable_mof_list()
   </script>
 {% endblock javascripts %}
 <!-- vim: set ft=htmldjango: -->

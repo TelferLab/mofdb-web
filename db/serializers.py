@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from db.models import (Mof, MofLigand)
 from db.models import (Reaction,
                        ReactionCatalystCC,
                        ReactionCatalystLigand,
@@ -6,6 +7,28 @@ from db.models import (Reaction,
                        ReactionProduct,
                        ReactionReactant)
 
+######## MOF ######
+class MofLigandSerializer(serializers.ModelSerializer):
+    mof_name = serializers.ReadOnlyField()
+    ligand_name = serializers.ReadOnlyField()
+    ligand_nick = serializers.ReadOnlyField()
+    ligand_functional_group = serializers.ReadOnlyField()
+    ligand_url = serializers.HyperlinkedIdentityField(view_name='ligand.views.details', format='html')
+
+    class Meta:
+        model = MofLigand
+        fields = '__all__'
+
+class MofSerializer(serializers.ModelSerializer):
+    ligands = MofLigandSerializer(source="mofligand_set", many=True, read_only=True)
+    url = serializers.HyperlinkedIdentityField(view_name='mof.views.details', format='html')
+    url_ligands_table = serializers.HyperlinkedIdentityField(view_name='mof.views.ligandstable', format='html')
+
+    class Meta:
+        model = Mof
+        fields = '__all__'
+
+######## REACTION ######
 
 class ReactionCatalystCCSerializer(serializers.ModelSerializer):
     reaction_name = serializers.ReadOnlyField()

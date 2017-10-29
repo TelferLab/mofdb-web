@@ -8,7 +8,7 @@
   <!-- <!&#45;&#45; menu profile quick info &#45;&#45;> -->
   <!-- <div class="profile clearfix"> -->
   <!--   <div class="profile_pic"> -->
-  <!--     <img src="/static/images/img.jpg" alt="..." class="img&#45;circle profile_img"> -->
+  <!--     <img src="{% static 'images/img.jpg' %}" alt="..." class="img&#45;circle profile_img"> -->
   <!--   </div> -->
   <!--   <div class="profile_info"> -->
   <!--     <span>Welcome,</span> -->
@@ -32,7 +32,7 @@
         <li><a href="{% url 'reaction.views.list' 1 %}"><i class="fa fa-flask"></i> Reactions</a></li>
         <li><a href="{% url 'index' %}"><i class="fa fa-group"></i> Chemical Compounds</a></li>
         <li><a href="{% url 'index' %}"><i class="fa fa-share-alt"></i> Ligands</a></li>
-        <li><a href="{% url 'index' %}"><i class="fa fa-cubes"></i> Mofs</a></li>
+        <li><a href="{% url 'mof.views.list' 1 %}"><i class="fa fa-cubes"></i> Mofs</a></li>
         <li><a><i class="fa fa-sitemap"></i> Extra Components<span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
               <li><a href="{% url 'index' %}">Mof Categories</a>

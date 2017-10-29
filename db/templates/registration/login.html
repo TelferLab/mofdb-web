@@ -5,7 +5,7 @@
 {% block stylesheets %}
   {{ block.super }}
   <!-- Animate.css -->
-  <link href="/static/vendors/animate.css/animate.min.css" rel="stylesheet">
+  <link href="{% static 'vendors/animate.css/animate.min.css' %}" rel="stylesheet">
 {% endblock stylesheets %}
 
 {% block body_class %}login{% endblock body_class %}

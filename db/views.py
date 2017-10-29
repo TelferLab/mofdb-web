@@ -4,8 +4,10 @@ from db.models import Reaction
 from db.models import ChemicalCompound
 from db.models import Ligand
 from db.models import Mof
-from db.serializers import ReactionSerializer
-from db.serializers import (ReactionCatalystCCSerializer,
+from db.serializers import (MofSerializer,
+                            MofLigandSerializer)
+from db.serializers import (ReactionSerializer,
+                            ReactionCatalystCCSerializer,
                             ReactionCatalystLigandSerializer,
                             ReactionCatalystMofSerializer,
                             ReactionReactantSerializer,
@@ -14,6 +16,30 @@ from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse, JsonResponse
 import json
 # Create your views here.
+############## MOFS #################
+
+class MofListViewJSON(ListView):
+    model = Mof
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        # Serialize Mofs
+        serializer = MofSerializer(queryset,
+                                        many=True, context={'request': request})
+        return HttpResponse(json.dumps(serializer.data), content_type='application/json')
+
+def mof_ligands_JSON(request, pk):
+    try:
+        mof = Mof.objects.get(pk=pk)
+    except Mof.DoesNotExist:
+        return HttpResponse(status=404)
+
+    # Serialize Mof ligands
+    ligand = MofLigandSerializer(mof.mofligand_set.all(),
+                                 many=True, context={'request': request})
+
+    return HttpResponse(json.dumps(ligand.data), content_type='application/json')
+
+############## REACTIONS #################
 
 class ReactionListViewJSON(ListView):
     model = Reaction
@@ -22,9 +48,6 @@ class ReactionListViewJSON(ListView):
         # Serialize Reactions
         serializer = ReactionSerializer(queryset,
                                         many=True, context={'request': request})
-        print(serializer)
-        print(serializer.data)
-        print(json.dumps(serializer.data))
         return HttpResponse(json.dumps(serializer.data), content_type='application/json')
 
 def reaction_catalysts_JSON(request, pk):

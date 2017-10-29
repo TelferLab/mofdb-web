@@ -258,6 +258,22 @@ class MofLigand(models.Model):
     def __str__(self):
         return str(self.id)
 
+    @property
+    def mof_name(self):
+        return self.mof.name
+
+    @property
+    def ligand_name(self):
+        return self.ligand.name
+
+    @property
+    def ligand_nick(self):
+        return self.ligand.nick
+
+    @property
+    def ligand_functional_group(self):
+        return self.ligand.functional_group.name
+
     class Meta:
         db_table = 'Mof_Ligand'
 

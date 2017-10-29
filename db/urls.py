@@ -18,10 +18,15 @@ urlpatterns = [
     url(r'^ligand/(?P<pk>[0-9]+)/$', LigandDetailView.as_view(), name='ligand.views.details'),
     url(r'^mofs/([\w-]+)/$', MofListView.as_view(), name='mof.views.list'),
     url(r'^mof/(?P<pk>[0-9]+)/$', MofDetailView.as_view(), name='mof.views.details'),
+### TABLES ####
+# Reaction #
     url(r'^reaction-catalysts-table/(?P<pk>[0-9]+)/$', views.reaction_catalysts_JSON, name='reaction.views.catalyststable'),
     url(r'^reaction-reactants-table/(?P<pk>[0-9]+)/$', views.reaction_reactants_JSON, name='reaction.views.reactantstable'),
     url(r'^reaction-products-table/(?P<pk>[0-9]+)/$', views.reaction_products_JSON, name='reaction.views.productstable'),
     url(r'^reactions-table/([\w-]+)/$', views.ReactionListViewJSON.as_view(), name='reaction.views.table'),
+# Mof #
+    url(r'^mof-ligands-table/(?P<pk>[0-9]+)/$', views.mof_ligands_JSON, name='mof.views.ligandstable'),
+    url(r'^mofs-table/([\w-]+)/$', views.MofListViewJSON.as_view(), name='mof.views.table'),
 ]
 
 from django.conf import settings

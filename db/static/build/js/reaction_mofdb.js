@@ -317,14 +317,14 @@ function display_datatable_reaction_list(){
                 // row.child( reaction_format_extra(row.data()) ).show();
                 row.child( reaction_format_table_all(row.data()) ).show();
                 tr.addClass('shown');
-                ajax_reload_all_tables(row);
+                ajax_reload_all_reaction_subtables(row);
             }
 
         } );
     } );
 }
 
-function ajax_reload_all_tables(row){
+function ajax_reload_all_reaction_subtables(row){
     var origin = window.location.origin;
     // Catalysts
     var catalysts_url = origin + '/reaction-catalysts-table/' + row.data().id;

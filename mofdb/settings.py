@@ -50,16 +50,17 @@ INSTALLED_APPS = [
     # greater consistency between gunicorn and `./manage.py runserver`. See:
     # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
     'whitenoise.runserver_nostatic',
-    # 'livereload',
     'django.contrib.staticfiles',
     'django_extensions',  # https://github.com/django-extensions/django-extensions
-    'storages',           # django-storages: https://github.com/jschneier/django-storages
     'django_cleanup',     # https://github.com/un1t/django-cleanup
-    # 'django_tables2',     # https://github.com/bradleyayers/django-tables2
-                          # 'nested_admin',       # https://github.com/theatlantic/django-nested-admin
     'rest_framework',
     'haystack',
+    # With whitenoise, storages might not be needed. http://whitenoise.evans.io/en/stable/index.html#infrequently-asked-questions
+    # 'storages',           # django-storages: https://github.com/jschneier/django-storages
+    # 'django_tables2',     # https://github.com/bradleyayers/django-tables2
+                          # 'nested_admin',       # https://github.com/theatlantic/django-nested-admin
     # 'debug_toolbar'      # django-debug-toolbar
+    # 'livereload',
 ]
 
 # Configure for bonsai in heroku: https://docs.bonsai.io/docs/django-haystack
@@ -68,7 +69,8 @@ ES_URL = urlparse(os.environ.get('BONSAI_URL') or 'http://127.0.0.1:9200/')
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch2_backend.Elasticsearch2SearchEngine',
-        'URL': ES_URL.scheme + '://' + ES_URL.hostname + ':443',
+        # 'URL': ES_URL.scheme + '://' + ES_URL.hostname + ':443',
+        'URL': ES_URL.scheme + '://' + ES_URL.hostname + ':9200',
         'INDEX_NAME': 'haystack',
     },
 }
@@ -86,12 +88,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'livereload.middleware.LiveReloadScript',
-    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
-
-# Needed for DebugToolBar (only used in local dev)
-# INTERNAL_IPS = ['127.0.0.1', ]
 
 ROOT_URLCONF = 'mofdb.urls'
 
@@ -109,6 +106,9 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             'debug': DEBUG,
+            'builtins': [
+                'django.contrib.staticfiles.templatetags.staticfiles',
+            ],
         },
     },
 ]

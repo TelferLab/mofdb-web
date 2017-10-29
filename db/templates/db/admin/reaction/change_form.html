@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
   {{ block.super }}
-  <link href="/static/db.css" rel="stylesheet">
+  <link href="{% static 'db.css' %}" rel="stylesheet">
 {% endblock stylesheets %}
 
 {# django_tables2 Tables #}
