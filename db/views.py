@@ -16,6 +16,16 @@ from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse, JsonResponse
 import json
 # Create your views here.
+############## LIGANDS #################
+class LigandListViewJSON(ListView):
+    model = Ligand
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        # Serialize Ligands
+        serializer = LigandSerializer(queryset,
+                                        many=True, context={'request': request})
+        return HttpResponse(json.dumps(serializer.data), content_type='application/json')
+
 ############## MOFS #################
 
 class MofListViewJSON(ListView):

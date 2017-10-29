@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from db.models import Ligand
 from db.models import (Mof, MofLigand)
 from db.models import (Reaction,
                        ReactionCatalystCC,
@@ -6,6 +7,14 @@ from db.models import (Reaction,
                        ReactionCatalystMof,
                        ReactionProduct,
                        ReactionReactant)
+
+######## LIGAND ######
+class LigandSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='ligand.views.details', format='html')
+
+    class Meta:
+        model = Ligand
+        fields = '__all__'
 
 ######## MOF ######
 class MofLigandSerializer(serializers.ModelSerializer):
