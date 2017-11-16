@@ -56,4 +56,13 @@
     {# </div> #}
     {# {% endfor reaction in reactions %} #}
 {% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <!-- Custom -->
+  <script src="{% static 'build/js/reaction_mofdb.js' %}"></script>
+  <script charset="utf-8" type="text/javascript">
+populate_admin_link("{% url 'admin:index' %}")
+  </script>
+{% endblock javascripts %}
 <!-- vim: set ft=htmldjango: -->
