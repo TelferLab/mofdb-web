@@ -240,7 +240,7 @@ class Mof(models.Model):
 
     @property
     def all_ligands(self):
-        return ', '.join([a.name for a in self.ligands.all()])
+        return ', '.join([a.nick for a in self.ligands.all()])
 
     class Meta:
         db_table = 'Mof'
@@ -339,23 +339,23 @@ class Reaction(models.Model):
 
     @property
     def all_catalysts_cc(self):
-        return ', '.join([a.name for a in self.catalysts_cc.all()])
+        return ', '.join([a.nick for a in self.catalysts_cc.all()])
 
     @property
     def all_catalysts_ligand(self):
-        return ', '.join([a.name for a in self.catalysts_ligand.all()])
+        return ', '.join([a.nick for a in self.catalysts_ligand.all()])
 
     @property
     def all_catalysts_mof(self):
-        return ', '.join([a.name for a in self.catalysts_mof.all()])
+        return ', '.join([a.nick for a in self.catalysts_mof.all()])
 
     @property
     def all_reactants(self):
-        return ', '.join([a.name for a in self.reactants.all()])
+        return ', '.join([a.nick for a in self.reactants.all()])
 
     @property
     def all_products(self):
-        return ', '.join([a.name for a in self.products.all()])
+        return ', '.join([a.nick for a in self.products.all()])
 
     class Meta:
         db_table = 'Reaction'
