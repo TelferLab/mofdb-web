@@ -360,6 +360,38 @@ class Reaction(models.Model):
     class Meta:
         db_table = 'Reaction'
 
+# Attachment without any classification, accepts more or less everything.
+# Optional short_description
+# dev extra info:
+# All models have a one to many with attachments.
+# DJango has many to one, but not one to many:
+#   To model this in Django we create a foreign key from the attachment to the model.
+# We create classes that inherits from Attachment.
+#(in the backend Django creates a one-to-one relationship between Attachment and AttachmentXXX)
+class Attachment(models.Model):
+    id = models.AutoField(primary_key=True)
+    file = models.FileField(upload_to="attachment/")
+    description_short = models.CharField(max_length=200, blank=True,
+                                         verbose_name="Short Description")
+
+class AttachmentReaction(Attachment):
+    reaction = models.ForeignKey('Reaction',
+                                 related_name='attachments',
+                                 on_delete=models.CASCADE) # Delete the attachment if reaction is deleted.
+class AttachmentMof(Attachment):
+    mof = models.ForeignKey('Mof',
+                            related_name='attachments',
+                            on_delete=models.CASCADE) # Delete the attachment if mof is deleted.
+
+class AttachmentLigand(Attachment):
+    ligand = models.ForeignKey('Ligand',
+                               related_name='attachments',
+                               on_delete=models.CASCADE) # Delete the attachment if ligand is deleted.
+
+class AttachmentChemicalCompound(Attachment):
+    chemicalcompound = models.ForeignKey('ChemicalCompound',
+                                         related_name='attachments',
+                                         on_delete=models.CASCADE) # Delete the attachment if chemicalcompound is deleted.
 
 class ReactionData(models.Model):
     id = models.AutoField(primary_key=True)

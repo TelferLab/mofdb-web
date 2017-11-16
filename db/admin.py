@@ -15,10 +15,15 @@ from db.models import ReactionCatalystLigand
 from db.models import ReactionCatalystMof
 from db.models import ReactionReactant
 from db.models import ReactionProduct
-from db.models import VisualizationCC
-from db.models import VisualizationLigand
-from db.models import VisualizationMof
-from db.models import VisualizationReaction
+from db.models import (Attachment,
+                       AttachmentChemicalCompound,
+                       AttachmentLigand,
+                       AttachmentMof,
+                       AttachmentReaction)
+from db.models import (VisualizationCC,
+                       VisualizationLigand,
+                       VisualizationMof,
+                       VisualizationReaction)
 from db.serializers import (ReactionCatalystCCSerializer,
                             ReactionCatalystLigandSerializer,
                             ReactionCatalystMofSerializer,
@@ -53,6 +58,12 @@ class FunctionalGroupAdmin(admin.ModelAdmin):
     list_display = ('name',)
 
 # Reaction {{{
+class AttachmentReactionInline(admin.TabularInline):
+    model = AttachmentReaction
+    extra = 1
+    verbose_name = "Attachment"
+    verbose_name_plural = "Attachments"
+
 class VisualizationReactionInline(admin.TabularInline):
     model = VisualizationReaction
     extra = 1
@@ -143,6 +154,7 @@ class ReactionAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
         ReactionCatalystLigandInline,
         ReactionCatalystMofInline,
         ReactionDataInline,
+        AttachmentReactionInline,
     )
     list_display = ('name', 'all_catalysts_ligand')
 
@@ -160,6 +172,12 @@ class ReactionAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
     change_form_template = 'db/admin/reaction/change_form.html'
 
 # ChemicalCompound {{{
+class AttachmentChemicalCompoundInline(admin.TabularInline):
+    model = AttachmentChemicalCompound
+    extra = 1
+    verbose_name = "Attachment"
+    verbose_name_plural = "Attachments"
+
 class VisualizationCCInline(admin.TabularInline):
     model = VisualizationCC
     extra = 1
@@ -177,11 +195,18 @@ class ChemicalCompoundAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
                     )
     inlines = (
         VisualizationCCInline,
+        AttachmentChemicalCompoundInline,
     )
 # }}}
 
 
 # Ligand {{{
+class AttachmentLigandInline(admin.TabularInline):
+    model = AttachmentLigand
+    extra = 1
+    verbose_name = "Attachment"
+    verbose_name_plural = "Attachments"
+
 class VisualizationLigandInline(admin.TabularInline):
     model = VisualizationLigand
     extra = 1
@@ -191,12 +216,6 @@ class VisualizationLigandInline(admin.TabularInline):
 class BaseLigandAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     list_display = ('name',)
-# class BaseLigandAdmin(admin.ModelAdmin):
-#     def get_model_perms(self, request):
-#         """
-#         Return empty perms dict thus hiding the model from admin index, but allowing edit/add new from Ligand.
-#         """
-#         return {}
 
 @admin.register(Ligand)
 class LigandAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
@@ -214,6 +233,7 @@ class LigandAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
                     )
     inlines = (
         VisualizationLigandInline,
+        AttachmentLigandInline,
     )
 
     # Autocomplete: requires grappelli:
@@ -226,6 +246,12 @@ class LigandAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
 
 
 # Mof {{{
+class AttachmentMofInline(admin.TabularInline):
+    model = AttachmentMof
+    extra = 1
+    verbose_name = "Attachment"
+    verbose_name_plural = "Attachments"
+
 class MofLigandInline(admin.TabularInline):
     model = Mof.ligands.through
     extra = 1
@@ -256,5 +282,6 @@ class MofAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
     inlines = (
         VisualizationMofInline,
         MofLigandInline,
+        AttachmentMofInline,
     )
 # }}}
