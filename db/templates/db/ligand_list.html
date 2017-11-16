@@ -26,6 +26,7 @@
   <script src="{% static 'build/js/ligand_mofdb.js' %}"></script>
   <script charset="utf-8" type="text/javascript">
 display_datatable_ligand_list()
+populate_admin_link("{% url 'admin:db_ligand_changelist'%}")
   </script>
 {% endblock javascripts %}
 <!-- vim: set ft=htmldjango: -->
