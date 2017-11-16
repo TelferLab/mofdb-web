@@ -174,9 +174,6 @@ class ChemicalCompoundAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
     list_display = ('name',
                     'nick',
                     'formula',
-                    'synthesis',
-                    'analysis',
-                    'mass',
                     )
     inlines = (
         VisualizationCCInline,
@@ -211,9 +208,6 @@ class LigandAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
     list_display = ('name',
                     'nick',
                     'formula',
-                    'synthesis',
-                    'analysis',
-                    'mass',
                     'category_name',
                     'functional_group',
                     'base_ligand_name',
@@ -256,9 +250,6 @@ class MofAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
     list_display = ('name',
                     'nick',
                     'formula',
-                    'synthesis',
-                    'analysis',
-                    'mass',
                     'topology',
                     'all_ligands',
                     )
