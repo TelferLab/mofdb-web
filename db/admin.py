@@ -20,10 +20,9 @@ from db.models import (Attachment,
                        AttachmentLigand,
                        AttachmentMof,
                        AttachmentReaction)
-from db.models import (VisualizationCC,
-                       VisualizationLigand,
-                       VisualizationMof,
-                       VisualizationReaction)
+from db.models import (StructureChemicalCompound,
+                       StructureLigand,
+                       StructureReaction)
 from db.serializers import (ReactionCatalystCCSerializer,
                             ReactionCatalystLigandSerializer,
                             ReactionCatalystMofSerializer,
@@ -64,11 +63,11 @@ class AttachmentReactionInline(admin.TabularInline):
     verbose_name = "Attachment"
     verbose_name_plural = "Attachments"
 
-class VisualizationReactionInline(admin.TabularInline):
-    model = VisualizationReaction
+class StructureReactionInline(admin.TabularInline):
+    model = StructureReaction
     extra = 1
-    verbose_name = "Visualization"
-    verbose_name_plural = "Visualizations"
+    verbose_name = "Reaction Structure"
+    verbose_name_plural = "Reaction Structures"
 
 
 class ReactionDataInline(admin.TabularInline):
@@ -147,7 +146,7 @@ class ReactionAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
                      'products__name',
                      )
     inlines = (
-        VisualizationReactionInline,
+        StructureReactionInline,
         ReactionReactantInline,
         ReactionProductInline,
         ReactionCatalystCCInline,
@@ -178,9 +177,11 @@ class AttachmentChemicalCompoundInline(admin.TabularInline):
     verbose_name = "Attachment"
     verbose_name_plural = "Attachments"
 
-class VisualizationCCInline(admin.TabularInline):
-    model = VisualizationCC
+class StructureChemicalCompoundInline(admin.TabularInline):
+    model = StructureChemicalCompound
     extra = 1
+    verbose_name = "CC Structure"
+    verbose_name_plural = "CC Structures"
 
 
 @admin.register(ChemicalCompound)
@@ -194,7 +195,7 @@ class ChemicalCompoundAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
                     'formula',
                     )
     inlines = (
-        VisualizationCCInline,
+        StructureChemicalCompoundInline,
         AttachmentChemicalCompoundInline,
     )
 # }}}
@@ -207,9 +208,11 @@ class AttachmentLigandInline(admin.TabularInline):
     verbose_name = "Attachment"
     verbose_name_plural = "Attachments"
 
-class VisualizationLigandInline(admin.TabularInline):
-    model = VisualizationLigand
-    extra = 1
+class StructureLigandInline(admin.TabularInline):
+    model = StructureLigand
+    extra = 0
+    verbose_name = "Ligand Structure"
+    verbose_name_plural = "Ligand Structures"
 
 
 @admin.register(BaseLigand)
@@ -232,7 +235,7 @@ class LigandAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
                     'base_ligand_name',
                     )
     inlines = (
-        VisualizationLigandInline,
+        StructureLigandInline,
         AttachmentLigandInline,
     )
 
@@ -261,11 +264,6 @@ class MofLigandInline(admin.TabularInline):
     }
 
 
-class VisualizationMofInline(admin.TabularInline):
-    model = VisualizationMof
-    extra = 1
-
-
 @admin.register(Mof)
 class MofAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
     search_fields = ('name',
@@ -280,7 +278,6 @@ class MofAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
                     'all_ligands',
                     )
     inlines = (
-        VisualizationMofInline,
         MofLigandInline,
         AttachmentMofInline,
     )

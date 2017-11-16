@@ -22,3 +22,4 @@ certifi>=0.0.8
 # django-nested-admin==3.0.20
 -e git+https://github.com/CrossWaterBridge/django-grappelli-autocomplete-fk-edit-link.git@master#egg=django-grappelli-autocomplete-fk-edit-link
 # django-debug-toolbar>=1.8
+pillow==4.3.0

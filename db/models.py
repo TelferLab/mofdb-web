@@ -667,80 +667,33 @@ class ReactionReactant(models.Model):
     class Meta:
         db_table = 'Reaction_Reactant'
 
-
-class VisualizationCC(models.Model):
+# Structure main goal is to have an ImageField with a screenshot of
+# a visualization.
+# Any other visualization files can be stored as attachments.
+# Mofs have no Structure
+class Structure(models.Model):
     id = models.AutoField(primary_key=True)
-    chemical_compound = models.OneToOneField(
-        ChemicalCompound,
-        on_delete=models.DO_NOTHING,
-        related_name="visualization")
-    chemdraw = models.FileField(upload_to="visualization/cc/")
+    image = models.ImageField(upload_to='structure_images/')
+    def image_tag(self):
+        return mark_safe('<img src="/structure_images/%s" width="150" height="150" />' % (self.image))
 
-    class Meta:
-        db_table = 'VisualizationCC'
+    image_tag.short_description = 'Image'
 
-
-class VisualizationLigand(models.Model):
-    id = models.AutoField(primary_key=True)
-    ligand = models.OneToOneField(
-        Ligand,
-        on_delete=models.DO_NOTHING,
-        related_name="visualization")
-    chemdraw = models.FileField(upload_to="visualization/ligand/")
-
-    class Meta:
-        db_table = 'VisualizationLigand'
-
-
-class VisualizationMof(models.Model):
-    id = models.AutoField(primary_key=True)
-    mof = models.OneToOneField(
-        Mof,
-        on_delete=models.DO_NOTHING,
-        related_name="visualization")
-    cif = models.FileField(db_column='CIF',  # Field name made lowercase.
-                           upload_to="visualization/mof/cif/")
-
-    class Meta:
-        db_table = 'VisualizationMof'
-
-
-class VisualizationReaction(models.Model):
-    id = models.AutoField(primary_key=True)
-    reaction = models.OneToOneField(
-        Reaction,
-        on_delete=models.DO_NOTHING,
-        related_name="visualization")
-    chemdraw = models.FileField(upload_to="visualization/reaction/")
-
-    class Meta:
-        db_table = 'VisualizationReaction'
-
-# class DjangoMigrations(models.Model):
-#     app = models.CharField(max_length=255)
-#     name = models.CharField(max_length=255)
-#     applied = models.DateTimeField()
-#
-#     class Meta:
-#         db_table = 'django_migrations'
-
-# class ExperimentalData(models.Model):
-#     id = models.AutoField(primary_key=True)
-#     functional_group = models.ForeignKey(
-#         FunctionalGroup,
-#         on_delete=models.DO_NOTHING,
-#         blank=True, null=True)
-#     chirality = EnumField(Chirality, max_length=5, blank=True, null=True)
-#     rate_constant = models.FloatField(blank=True, null=True)
-#     conversion = models.FloatField(blank=True, null=True)
-#     ee = models.FloatField(blank=True, null=True)
-#     de = models.FloatField(blank=True, null=True)
-#     # yield renamed because it was a Python reserved word.
-#     yield_field = models.FloatField(db_column='yield', blank=True, null=True)
-#     amount = models.FloatField(blank=True, null=True)
-#
-#     def __str__(self):
-#         return str(self.id)
-#
-#     class Meta:
-#         db_table = 'ExperimentalData'
+class StructureChemicalCompound(Structure):
+    chemicalcompound = models.ForeignKey(
+        'ChemicalCompound',
+        related_name='structure',
+        on_delete=models.CASCADE # Delete the structure if chemicalcompound is deleted.
+    )
+class StructureLigand(Structure):
+    ligand = models.ForeignKey(
+        'Ligand',
+        related_name='structure',
+        on_delete=models.CASCADE # Delete the structure if ligand is deleted.
+    )
+class StructureReaction(Structure):
+    reaction = models.ForeignKey(
+        'Reaction',
+        related_name='structure',
+        on_delete=models.CASCADE # Delete the structure if reaction is deleted.
+    )
