@@ -55,8 +55,8 @@ INSTALLED_APPS = [
     'django_cleanup',     # https://github.com/un1t/django-cleanup
     'rest_framework',
     'haystack',
-    # With whitenoise, storages might not be needed. http://whitenoise.evans.io/en/stable/index.html#infrequently-asked-questions
-    # 'storages',           # django-storages: https://github.com/jschneier/django-storages
+    # Storages is used for S3 media storage.
+    'storages',           # django-storages: https://github.com/jschneier/django-storages
     # 'django_tables2',     # https://github.com/bradleyayers/django-tables2
                           # 'nested_admin',       # https://github.com/theatlantic/django-nested-admin
     # 'debug_toolbar'      # django-debug-toolbar
@@ -105,7 +105,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            'debug': DEBUG,
             'builtins': [
                 'django.contrib.staticfiles.templatetags.staticfiles',
             ],
@@ -182,7 +181,7 @@ DATABASES['default'] = dj_database_url.config(conn_max_age=500,
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Allow all host headers
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://mofdb.herokuapp.com/', '127.0.0.1' ]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -222,3 +221,38 @@ GRAPPELLI_AUTOCOMPLETE_SEARCH_FIELDS = {
         "reaction": ("id__iexact", "name__icontains",),
     }
 }
+
+# settings.py
+## LOG everything (works in debug or in release)
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'verbose': {
+#             'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+#             'datefmt' : "%d/%b/%Y %H:%M:%S"
+#         },
+#         'simple': {
+#             'format': '%(levelname)s %(message)s'
+#         },
+#     },
+#     'handlers': {
+#         'file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': 'mofdb.log',
+#             'formatter': 'verbose'
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers':['file'],
+#             'propagate': True,
+#             'level':'DEBUG',
+#         },
+#         'db': {
+#             'handlers': ['file'],
+#             'level': 'DEBUG',
+#         },
+#     }
+# }
