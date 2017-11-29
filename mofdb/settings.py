@@ -203,7 +203,10 @@ STATICFILES_FINDERS = [
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Django default for debugging: http://whitenoise.evans.io/en/stable/django.html#troubleshooting-the-whitenoise-storage-backend
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
 
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'databasefiles')
 MEDIA_URL = 'databasefiles/'
