@@ -77,7 +77,7 @@ HAYSTACK_CONNECTIONS = {
 if ES_URL.username:
     HAYSTACK_CONNECTIONS['default']['KWARGS'] = {"http_auth": ES_URL.username + ':' + ES_URL.password}
 # No management commands needed. Cons: Might provoke delay after save() models.
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+# HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -181,7 +181,7 @@ DATABASES['default'] = dj_database_url.config(conn_max_age=500,
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Allow all host headers
-ALLOWED_HOSTS = ['https://mofdb.herokuapp.com/', '127.0.0.1' ]
+ALLOWED_HOSTS = ['mofdb.herokuapp.com/', '127.0.0.1' ]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
