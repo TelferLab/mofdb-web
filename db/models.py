@@ -373,6 +373,10 @@ class Attachment(models.Model):
     file = models.FileField(upload_to="attachment/")
     description_short = models.CharField(max_length=200, blank=True,
                                          verbose_name="Short Description")
+    #position field (used for ordering in grappelli)
+    position = models.PositiveSmallIntegerField("Position", null=True)
+    class Meta:
+        ordering = ['position']
 
 class AttachmentReaction(Attachment):
     reaction = models.ForeignKey('Reaction',
