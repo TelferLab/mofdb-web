@@ -28,6 +28,7 @@ from db.serializers import (ReactionCatalystCCSerializer,
                             ReactionCatalystMofSerializer,
                             ReactionReactantSerializer,
                             ReactionProductSerializer)
+from grappelli.forms import GrappelliSortableHiddenMixin
 # from db.tables import (CatalystsTable,
 #                        ReactantsTable,
 #                        ProductsTable)
@@ -57,7 +58,7 @@ class FunctionalGroupAdmin(admin.ModelAdmin):
     list_display = ('name',)
 
 # Reaction {{{
-class AttachmentReactionInline(admin.TabularInline):
+class AttachmentReactionInline(GrappelliSortableHiddenMixin, admin.TabularInline):
     model = AttachmentReaction
     extra = 1
     verbose_name = "Attachment"
@@ -171,7 +172,7 @@ class ReactionAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
     change_form_template = 'db/admin/reaction/change_form.html'
 
 # ChemicalCompound {{{
-class AttachmentChemicalCompoundInline(admin.TabularInline):
+class AttachmentChemicalCompoundInline(GrappelliSortableHiddenMixin, admin.TabularInline):
     model = AttachmentChemicalCompound
     extra = 1
     verbose_name = "Attachment"
@@ -202,7 +203,7 @@ class ChemicalCompoundAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
 
 
 # Ligand {{{
-class AttachmentLigandInline(admin.TabularInline):
+class AttachmentLigandInline(GrappelliSortableHiddenMixin, admin.TabularInline):
     model = AttachmentLigand
     extra = 1
     verbose_name = "Attachment"
@@ -249,7 +250,7 @@ class LigandAdmin(AutocompleteEditLinkAdminMixin, admin.ModelAdmin):
 
 
 # Mof {{{
-class AttachmentMofInline(admin.TabularInline):
+class AttachmentMofInline(GrappelliSortableHiddenMixin, admin.TabularInline):
     model = AttachmentMof
     extra = 1
     verbose_name = "Attachment"
