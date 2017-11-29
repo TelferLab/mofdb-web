@@ -25,6 +25,9 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG_string = os.environ.get('DEBUG') or 'True'
 DEBUG = bool(strtobool(DEBUG_string))
+# Variable for S3 storages extra protection...(just in case)
+PRODUCTION_string = os.environ.get('PRODUCTION') or 'False'
+PRODUCTION = bool(strtobool(PRODUCTION_string))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 if DEBUG:
@@ -78,7 +81,8 @@ HAYSTACK_CONNECTIONS = {
 if ES_URL.username:
     HAYSTACK_CONNECTIONS['default']['KWARGS'] = {"http_auth": ES_URL.username + ':' + ES_URL.password}
 # No management commands needed. Cons: Might provoke delay after save() models.
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+if PRODUCTION:
+    HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -211,6 +215,10 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesSto
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'databasefiles')
 MEDIA_URL = 'databasefiles/'
 
+# Storages (S3 boto3): https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
+if PRODUCTION:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 # Grappelli : https://django-grappelli.readthedocs.io/en/latest/customization.html
 GRAPPELLI_ADMIN_TITLE = 'MoFDB Admin'
 
@@ -228,7 +236,7 @@ GRAPPELLI_AUTOCOMPLETE_SEARCH_FIELDS = {
 }
 
 # settings.py
-## LOG everything (works in debug or in release)
+## LOG everything to console and to file (works in debug or in release)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -251,7 +259,7 @@ LOGGING = {
        'console': {
            'level': 'DEBUG',
            'class': 'logging.StreamHandler',
-          'formatter': 'verbose'
+           'formatter': 'verbose'
       }
     },
     'loggers': {
