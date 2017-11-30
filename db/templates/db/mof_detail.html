@@ -15,6 +15,13 @@
       <p><h2>Formula: {{ object.formula }}</h2> </p>
     </div>
     <div class="field_sep"></div>
+    <div class="structure">
+      <p><h2>Structure:</h2></p>
+      {% for s in object.structure.all %}
+        {{s.image_tag}}
+      {% endfor %}
+    </div>
+    <div class="field_sep"></div>
     <div class="container ligands">
       <h2>Ligands:</h2>
       <table id="{{ object.id }}" class="table-mof-ligands table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">

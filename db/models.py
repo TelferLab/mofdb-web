@@ -8,6 +8,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils.safestring import mark_safe
 
 from django.core.validators import MinValueValidator
 
@@ -679,7 +680,7 @@ class Structure(models.Model):
     id = models.AutoField(primary_key=True)
     image = models.ImageField(upload_to='structure_images/')
     def image_tag(self):
-        return mark_safe('<img src="/structure_images/%s" width="150" height="150" />' % (self.image))
+        return mark_safe('<a href="%s" target="_blank"><img src="%s" width="150" height="150" alt=%s></a>' % (self.image.url, self.image.url, self.image.name))
 
     image_tag.short_description = 'Image'
 

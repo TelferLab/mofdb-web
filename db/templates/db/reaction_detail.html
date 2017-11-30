@@ -11,6 +11,13 @@
       <p><h2>Category: {{ object.category }}</h2> </p>
     </div>
     <div class="field_sep"></div>
+    <div class="structure">
+      <p><h2>Structure:</h2></p>
+      {% for s in object.structure.all %}
+        {{s.image_tag}}
+      {% endfor %}
+    </div>
+    <div class="field_sep"></div>
     <div class="container catalysts">
       <h2>Catalysts:</h2>
       <table id="{{ object.id }}" class="table-catalysts table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">

@@ -20,6 +20,13 @@
       <p><h2>Formula: {{ object.formula }}</h2> </p>
     </div>
     <div class="field_sep"></div>
+    <div class="structure">
+      <p><h2>Structure:</h2></p>
+      {% for s in object.structure.all %}
+        {{s.image_tag}}
+      {% endfor %}
+    </div>
+    <div class="field_sep"></div>
     <div class="synthesis">
       <p>
       <span class="title"><h2>Synthesis:</h2></span>
