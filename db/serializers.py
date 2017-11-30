@@ -46,12 +46,13 @@ class LigandSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='ligand.views.details', format='html')
     chirality = EnumField(enum_class=Chirality)
     category = serializers.CharField(source='category_name', read_only=True)
+    functional_group = serializers.CharField(source='functional_group_name', read_only=True)
     # category = StrPrimaryKeyRelatedField(queryset=Category)
 
     class Meta:
         model = Ligand
         # fields = '__all__'
-        exclude=('category',)
+        exclude=('category', 'functional_group')
 
 
 ######## MOF ######
@@ -68,6 +69,7 @@ class MofLigandSerializer(serializers.ModelSerializer):
 
 class MofSerializer(serializers.ModelSerializer):
     ligands = MofLigandSerializer(source="mofligand_set", many=True, read_only=True)
+    all_ligands = serializers.CharField(read_only=True)
     url = serializers.HyperlinkedIdentityField(view_name='mof.views.details', format='html')
     url_ligands_table = serializers.HyperlinkedIdentityField(view_name='mof.views.ligandstable', format='html')
 

@@ -140,6 +140,7 @@ function display_datatable_mof_list(){
                 { "data": "id" },
                 { "data": "name" },
                 { "data": "nick" },
+                { "data": "all_ligands" },
                 {
                     "data": "url",
                     "visible": false
