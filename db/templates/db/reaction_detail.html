@@ -18,6 +18,13 @@
       {% endfor %}
     </div>
     <div class="field_sep"></div>
+    <div class="attachments">
+      <p><h2>Attachments:</h2></p>
+      {% for a in object.attachments.all %}
+      <p> - <a href="{{a.file.url}}" target="_blank">{{a.basename}}</a> | {{a.description_short|safe}}<p>
+      {% endfor %}
+    </div>
+    <div class="field_sep"></div>
     <div class="container catalysts">
       <h2>Catalysts:</h2>
       <table id="{{ object.id }}" class="table-catalysts table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">

@@ -59,6 +59,13 @@
       <p><h2>Topology: {{ object.topology }}</h2> </p>
     </div>
     <div class="field_sep"></div>
+    <div class="attachments">
+      <p><h2>Attachments:</h2></p>
+      {% for a in object.attachments.all %}
+      <p> - <a href="{{a.file.url}}" target="_blank">{{a.basename}}</a> | {{a.description_short|safe}}<p>
+      {% endfor %}
+    </div>
+    <div class="field_sep"></div>
 {# <script charset="utf-8"> #}
 {# var data_catalysts= {{ data_catalysts|escapejs }} #}
 {# </script> #}

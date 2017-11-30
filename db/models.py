@@ -16,6 +16,7 @@ from enumfields import EnumField
 from enumfields import Enum  # Uses Ethan Furman's "enum34" backport
 from django.urls import reverse  # for get_absolute_url
 from django.contrib import admin
+import os
 
 class Chirality(Enum):
     R = 'right'
@@ -380,6 +381,10 @@ class Attachment(models.Model):
     position = models.PositiveSmallIntegerField("Position", null=True)
     class Meta:
         ordering = ['position']
+
+    @property
+    def basename(self):
+        return os.path.basename(self.file.name)
 
 class AttachmentReaction(Attachment):
     reaction = models.ForeignKey('Reaction',
