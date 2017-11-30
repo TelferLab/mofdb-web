@@ -104,8 +104,8 @@ class ReactionCatalystLigandInline(admin.TabularInline):
 class ReactionCatalystMofInline(admin.TabularInline):
     model = Reaction.catalysts_mof.through
     extra = 1
-    verbose_name = "Catalyst: Mof"
-    verbose_name_plural = "Catalysts: Mofs"
+    verbose_name = "Catalyst: MOF"
+    verbose_name_plural = "Catalysts: MOFs"
     raw_id_fields = ('component',)
     autocomplete_lookup_fields = {
         'fk': ['component', ]

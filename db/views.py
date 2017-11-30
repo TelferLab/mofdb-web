@@ -44,7 +44,7 @@ class MofListViewJSON(ListView):
     model = Mof
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        # Serialize Mofs
+        # Serialize MOFs
         serializer = MofSerializer(queryset,
                                         many=True, context={'request': request})
         return HttpResponse(json.dumps(serializer.data), content_type='application/json')

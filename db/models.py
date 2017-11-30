@@ -245,6 +245,8 @@ class Mof(models.Model):
 
     class Meta:
         db_table = 'Mof'
+        verbose_name = "MOF"
+        verbose_name_plural = "MOFs"
 
 
 class MofLigand(models.Model):
@@ -675,7 +677,7 @@ class ReactionReactant(models.Model):
 # Structure main goal is to have an ImageField with a screenshot of
 # a visualization.
 # Any other visualization files can be stored as attachments.
-# Mofs have no Structure
+# MOFs have no Structure
 class Structure(models.Model):
     id = models.AutoField(primary_key=True)
     image = models.ImageField(upload_to='structure_images/')
