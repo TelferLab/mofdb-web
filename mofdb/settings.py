@@ -213,7 +213,7 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesSto
 
 
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'databasefiles')
-MEDIA_URL = 'databasefiles/'
+MEDIA_URL = '/databasefiles/'
 
 # Storages (S3 boto3): https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
 if PRODUCTION:
