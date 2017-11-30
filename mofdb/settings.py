@@ -218,6 +218,9 @@ MEDIA_URL = 'databasefiles/'
 # Storages (S3 boto3): https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
 if PRODUCTION:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID') or ''
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY') or ''
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME') or ''
 
 # Grappelli : https://django-grappelli.readthedocs.io/en/latest/customization.html
 GRAPPELLI_ADMIN_TITLE = 'MoFDB Admin'
